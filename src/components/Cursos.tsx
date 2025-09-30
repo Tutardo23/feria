@@ -66,21 +66,26 @@ export default function Cursos() {
   const bgRef = useRef<HTMLDivElement>(null)
 
   /* --------- Animación de “moléculas” con GSAP (sutil) --------- */
-  useEffect(() => {
-    if (!bgRef.current) return
-    const nodes = Array.from(bgRef.current.querySelectorAll('.mol')) as HTMLElement[]
-    const tl = gsap.timeline({ repeat: -1, yoyo: true })
-    tl.to(nodes, {
-      x: (i) => (i % 2 === 0 ? 16 : -18),
-      y: (i) => (i % 3 === 0 ? -14 : 12),
-      rotate: (i) => (i % 2 === 0 ? 8 : -6),
-      opacity: 0.18,
-      duration: 6,
-      ease: 'sine.inOut',
-      stagger: 0.4,
-    })
-    return () => tl.kill()
-  }, [])
+ useEffect(() => {
+  if (!bgRef.current) return
+  const nodes = Array.from(bgRef.current.querySelectorAll('.mol')) as HTMLElement[]
+  const tl = gsap.timeline({ repeat: -1, yoyo: true })
+
+  tl.to(nodes, {
+    x: (i) => (i % 2 === 0 ? 16 : -18),
+    y: (i) => (i % 3 === 0 ? -14 : 12),
+    rotate: (i) => (i % 2 === 0 ? 8 : -6),
+    opacity: 0.18,
+    duration: 6,
+    ease: 'sine.inOut',
+    stagger: 0.4,
+  })
+
+  // ✅ cleanup correcto
+  return () => {
+    tl.kill()
+  }
+}, [])
 
   /* --------- A11y: cerrar modal con Esc, focus trap simple --------- */
   useEffect(() => {
