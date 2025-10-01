@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from 'react'
 import Image from 'next/image'
 import gsap from 'gsap'
+import { useSwipeable } from 'react-swipeable'
 
 const eventos = [
   { id: 1, titulo: 'Obra de teatro científico', subtitulo: 'Actuación con experimentos en vivo', hora: '10:00 hs', lugar: 'Aula Magna', img: '/evento1.jpg' },
@@ -13,11 +14,25 @@ const eventos = [
 
 export default function Eventos() {
   const [index, setIndex] = useState(0)
+  const [direction, setDirection] = useState<'next' | 'prev'>('next')
   const titleRef = useRef<HTMLHeadingElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
 
-  const next = () => setIndex((prev) => (prev + 1) % eventos.length)
-  const prev = () => setIndex((prev) => (prev - 1 + eventos.length) % eventos.length)
+  const next = () => {
+    setDirection('next')
+    setIndex((prev) => (prev + 1) % eventos.length)
+  }
+  const prev = () => {
+    setDirection('prev')
+    setIndex((prev) => (prev - 1 + eventos.length) % eventos.length)
+  }
+
+  // Swipe handlers
+  const handlers = useSwipeable({
+    onSwipedLeft: () => next(),
+    onSwipedRight: () => prev(),
+    trackMouse: true, // también con mouse arrastrando
+  })
 
   // efecto escribir para el título principal
   useEffect(() => {
@@ -43,16 +58,24 @@ export default function Eventos() {
     }
   }, [])
 
-  // animación de entrada de cada card
+  // animación de slide en las cards
   useEffect(() => {
     if (cardRef.current) {
       gsap.fromTo(
         cardRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }
+        {
+          x: direction === 'next' ? 200 : -200,
+          opacity: 0,
+        },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power3.out',
+        }
       )
     }
-  }, [index])
+  }, [index, direction])
 
   const evento = eventos[index]
 
@@ -77,8 +100,8 @@ export default function Eventos() {
           </p>
         </div>
 
-        {/* Columna derecha: carrusel */}
-        <div className="lg:col-span-2 relative flex flex-col items-center">
+        {/* Columna derecha: carrusel con swipe */}
+        <div className="lg:col-span-2 relative flex flex-col items-center" {...handlers}>
           <div
             ref={cardRef}
             key={evento.id}

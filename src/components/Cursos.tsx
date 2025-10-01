@@ -118,7 +118,7 @@ export default function Cursos() {
     Object.values(data[c]).reduce((acc, divs) => acc + divs.length, 0)
 
   return (
-    <section id="cursos" className="relative py-20 bg-gradient-to-br from-green-50 to-yellow-50 overflow-hidden">
+    <section id="buscar" className="relative py-20 bg-gradient-to-br from-green-50 to-yellow-50 overflow-hidden">
       {/* Fondo científico sutil */}
       <div ref={bgRef} className="pointer-events-none absolute inset-0 -z-10 opacity-10">
         <div className="mol absolute -top-6 left-6 text-7xl">⚛️</div>
