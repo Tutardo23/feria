@@ -93,7 +93,7 @@ export default function Despedida() {
       </section>
 
       {/* Footer */}
-      <footer className="relative bg-[#2E7D32] text-white mt-0">
+      <footer className="relative bg-[#14532d] text-white mt-0">
   <div className="container mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-8 items-center text-center md:text-left">
     {/* Logo y nombre */}
     <div className="flex flex-col items-center md:items-start">

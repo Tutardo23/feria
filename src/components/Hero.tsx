@@ -14,16 +14,35 @@ export default function Hero() {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      const btns = Array.from(btnsRef.current?.querySelectorAll<HTMLElement>("a") ?? []);
+      const btns = Array.from(
+        btnsRef.current?.querySelectorAll<HTMLElement>("a") ?? []
+      );
 
-      // Animaciones de entrada
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.fromTo(videoRef.current!, { opacity: 0, scale: 1.05 }, { opacity: 1, scale: 1, duration: 1 })
-        .fromTo(h1Ref.current!, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, 0.3)
-        .fromTo(copyRef.current!, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, 0.5)
-        .fromTo(btns, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 }, 0.7);
+      tl.fromTo(
+        videoRef.current!,
+        { opacity: 0, scale: 1.05 },
+        { opacity: 1, scale: 1, duration: 1 }
+      )
+        .fromTo(
+          h1Ref.current!,
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.6 },
+          0.3
+        )
+        .fromTo(
+          copyRef.current!,
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.6 },
+          0.5
+        )
+        .fromTo(
+          btns,
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.6, stagger: 0.1 },
+          0.8
+        );
 
-      // 🎥 Parallax: solo el video hace zoom al scrollear
       if (videoRef.current) {
         gsap.to(videoRef.current, {
           scale: 1.15,
@@ -45,10 +64,13 @@ export default function Hero() {
       id="hero"
       className="relative h-screen w-full overflow-hidden bg-black text-white"
     >
+      {/* Fondo degradado verde atrás */}
+      <div className="absolute inset-0 bg-gradient-to-b from-green-950 via-green-900 to-green-700" />
+
       {/* Video de fondo */}
       <video
         ref={videoRef}
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover opacity-90"
         src="/ciencias.mp4"
         autoPlay
         loop
@@ -58,27 +80,28 @@ export default function Hero() {
         poster="/ciencias-poster.jpg"
       />
 
-      {/* Overlay oscuro */}
-      <div className="absolute inset-0 bg-gradient-to-b from-green-950/60 via-green-900/40 to-green-950/70" />
+      {/* Overlay con verde + negro */}
+      <div className="absolute inset-0 bg-gradient-to-b from-green-950/70 via-green-900/40 to-green-950/70 mix-blend-multiply" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/40" />
 
       {/* Contenido */}
       <div className="relative z-10 flex h-full flex-col items-center justify-center text-center px-6">
         {/* Logo */}
-        <div className="mb-4">
+        <div className="mb-5">
           <Image
             src="/logo-colegio.png"
             alt="Colegio Pucará"
-            width={70}
-            height={70}
-            className="drop-shadow-xl"
+            width={85}
+            height={85}
+            className="drop-shadow-lg"
           />
         </div>
 
         {/* Título */}
         <h1
           ref={h1Ref}
-          className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight"
-          style={{ textShadow: "0 3px 10px rgba(0,0,0,.4)" }}
+          className="mt-[-1rem] text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight"
+          style={{ textShadow: "0 3px 10px rgba(0,0,0,.6)" }}
         >
           NOCHE DE LAS <span className="text-[#F5C242]">CIENCIAS</span>
         </h1>
@@ -86,33 +109,33 @@ export default function Hero() {
         {/* Subtítulo */}
         <p
           ref={copyRef}
-          className="mt-2 text-base sm:text-lg text-white/90 font-medium"
+          className="mt-3 text-base sm:text-lg tracking-wide uppercase text-white/90"
         >
           EDICIÓN XI · 2025
         </p>
 
-        <p className="mt-3 max-w-lg text-sm sm:text-base text-white/80">
+        <p className="mt-2 max-w-xl text-sm sm:text-base text-white/80">
           Un encuentro para descubrir, experimentar y compartir el conocimiento.
         </p>
 
         {/* Botones */}
         <div
           ref={btnsRef}
-          className="mt-6 flex flex-col sm:flex-row justify-center gap-3 w-full max-w-sm"
+          className="mt-7 flex gap-5 flex-wrap justify-center"
         >
           <a
             href="#destacados"
-            className="flex-1 text-center rounded-lg px-5 py-2 
-                       bg-gradient-to-r from-yellow-400 to-[#F5C242] text-[#0C2D57] text-sm font-semibold 
-                       shadow-md hover:scale-105 transition-transform"
+            className="px-6 py-2.5 rounded-full 
+                       bg-[#F5C242] text-[#0C2D57] font-semibold text-sm 
+                       shadow-lg hover:shadow-xl hover:scale-105 transition"
           >
             Ver destacados
           </a>
           <a
             href="#buscar"
-            className="flex-1 text-center rounded-lg px-5 py-2 
-                       bg-white/90 text-green-900 text-sm font-semibold 
-                       shadow-md hover:scale-105 transition-transform"
+            className="px-6 py-2.5 rounded-full border-2 border-white 
+                       bg-transparent text-white font-semibold text-sm
+                       hover:bg-white hover:text-green-900 hover:scale-105 transition"
           >
             Buscar mi curso
           </a>
@@ -121,7 +144,12 @@ export default function Hero() {
 
       {/* Curva inferior */}
       <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none" className="w-full h-14">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1440 80"
+          preserveAspectRatio="none"
+          className="w-full h-14"
+        >
           <path
             fill="url(#gradiente)"
             d="M0,32L48,42.7C96,53,192,75,288,74.7C384,75,480,53,576,42.7C672,32,768,32,864,42.7C960,53,1056,75,1152,74.7C1248,75,1344,53,1392,42.7L1440,32L1440,80L0,80Z"
