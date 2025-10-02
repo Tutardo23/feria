@@ -1,13 +1,13 @@
 "use client";
 
 import { useLayoutEffect, useRef } from "react";
-import Image from "next/image";
 import gsap from "gsap";
 
 export default function Hero() {
   const h1Ref = useRef<HTMLHeadingElement>(null);
   const copyRef = useRef<HTMLParagraphElement>(null);
   const btnsRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -16,25 +16,40 @@ export default function Hero() {
       );
 
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+      // Video fade-in
       tl.fromTo(
-        h1Ref.current!,
+        videoRef.current,
+        { opacity: 0, scale: 1.05 },
+        { opacity: 1, scale: 1, duration: 1.2 },
+        0
+      );
+
+      // Título
+      tl.fromTo(
+        h1Ref.current,
+        { opacity: 0, y: 40, skewY: 5 },
+        { opacity: 1, y: 0, skewY: 0, duration: 0.8 },
+        0.4
+      );
+
+      // Subtítulo
+      tl.fromTo(
+        copyRef.current,
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.6 },
-        0.3
-      )
-        .fromTo(
-          copyRef.current!,
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.6 },
-          0.5
-        )
-        .fromTo(
-          btns,
-          { opacity: 0, y: 15 },
-          { opacity: 1, y: 0, duration: 0.6, stagger: 0.1 },
-          0.8
-        );
+        0.7
+      );
+
+      // Botones
+      tl.fromTo(
+        btns,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, stagger: 0.15 },
+        1
+      );
     });
+
     return () => ctx.revert();
   }, []);
 
@@ -43,40 +58,37 @@ export default function Hero() {
       id="hero"
       className="relative h-screen w-full overflow-hidden bg-black text-white"
     >
-      {/* Fondo degradado verde atrás */}
-      <div className="absolute inset-0 bg-gradient-to-b from-green-950 via-green-900 to-green-700" />
-
-      {/* Imagen de fondo */}
-      <Image
-        src="/hero.jpg"
-        alt="Noche de las Ciencias"
-        fill
-        className="object-cover opacity-90"
-        priority
+      {/* Video de fondo */}
+      <video
+        ref={videoRef}
+        className="absolute inset-0 h-full w-full object-cover"
+        src="/hero-bg.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
       />
 
-      {/* Overlay con verde + negro */}
-      <div className="absolute inset-0 bg-gradient-to-b from-green-950/70 via-green-900/40 to-green-950/70 mix-blend-multiply" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/40" />
+      {/* Overlays para contraste */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/70" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/40" />
 
       {/* Contenido */}
       <div className="relative z-10 flex h-full flex-col items-center justify-center text-center px-6">
         {/* Logo */}
-        <div className="mb-5">
-          <Image
+        <div className="mb-6">
+          <img
             src="/logo-colegio.png"
             alt="Colegio Pucará"
-            width={85}
-            height={85}
-            className="drop-shadow-lg"
+            className="h-20 w-20 object-contain drop-shadow-lg"
           />
         </div>
 
         {/* Título */}
         <h1
           ref={h1Ref}
-          className="mt-[-1rem] text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight"
-          style={{ textShadow: "0 3px 10px rgba(0,0,0,.6)" }}
+          className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight"
+          style={{ textShadow: "0 4px 15px rgba(0,0,0,.7)" }}
         >
           NOCHE DE LAS <span className="text-[#F5C242]">CIENCIAS</span>
         </h1>
@@ -94,12 +106,12 @@ export default function Hero() {
         </p>
 
         {/* Botones */}
-        <div ref={btnsRef} className="mt-7 flex gap-5 flex-wrap justify-center">
+        <div ref={btnsRef} className="mt-8 flex gap-5 flex-wrap justify-center">
           <a
             href="#destacados"
             className="px-6 py-2.5 rounded-full 
                        bg-[#F5C242] text-[#0C2D57] font-semibold text-sm 
-                       shadow-lg hover:shadow-xl hover:scale-105 transition"
+                       shadow-lg hover:shadow-xl hover:scale-105 transition-transform"
           >
             Ver destacados
           </a>
@@ -107,14 +119,14 @@ export default function Hero() {
             href="#buscar"
             className="px-6 py-2.5 rounded-full border-2 border-white 
                        bg-transparent text-white font-semibold text-sm
-                       hover:bg-white hover:text-green-900 hover:scale-105 transition"
+                       hover:bg-white hover:text-green-900 hover:scale-105 transition-transform"
           >
             Buscar mi curso
           </a>
         </div>
       </div>
 
-      {/* Curva inferior */}
+      {/* Curva inferior decorativa */}
       <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
         <svg
           xmlns="http://www.w3.org/2000/svg"
