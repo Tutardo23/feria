@@ -9,7 +9,7 @@ export default function AvisoMusical() {
 
   useEffect(() => {
     if (!avisoCerrado) {
-      const timer = setTimeout(() => setShowAviso(true), 8000) // 10 segundos
+      const timer = setTimeout(() => setShowAviso(true), 15000) // 10 segundos
       return () => clearTimeout(timer)
     }
   }, [avisoCerrado])

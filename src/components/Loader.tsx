@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
+import Image from 'next/image'
 import gsap from 'gsap'
 
 export default function Loader() {
@@ -9,7 +10,7 @@ export default function Loader() {
   const titleRef = useRef<HTMLHeadingElement>(null)
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const lineRef = useRef<HTMLDivElement>(null)
-  const bgRef = useRef<HTMLDivElement>(null)
+  const bgImgRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!loaderRef.current || !titleRef.current || !subtitleRef.current) return
@@ -21,24 +22,26 @@ export default function Loader() {
       onComplete: () => {
         gsap.to(loaderRef.current, {
           opacity: 0,
-          scale: 1.1,
+          scale: 1.05,
           filter: 'blur(20px)',
-          duration: 1.2,
+          duration: 1,
           ease: 'power2.inOut',
           onComplete: () => setLoading(false),
         })
       },
     })
 
-    // Fondo con blur inicial que se aclara
-    tl.fromTo(
-      bgRef.current,
-      { scale: 1.1, filter: 'blur(20px)', opacity: 0.6 },
-      { scale: 1, filter: 'blur(0px)', opacity: 1, duration: 1.5, ease: 'expo.out' },
-      0
-    )
+    // Fade-in de la imagen de fondo
+    if (bgImgRef.current) {
+      tl.fromTo(
+        bgImgRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 1.2, ease: 'power2.out' },
+        0
+      )
+    }
 
-    // Letras
+    // Letras principales
     tl.fromTo(
       letters,
       { opacity: 0, y: 80, rotateX: -90, filter: 'blur(10px)' },
@@ -75,19 +78,24 @@ export default function Loader() {
   return (
     <div
       ref={loaderRef}
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center text-white overflow-hidden"
+      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center text-white overflow-hidden bg-black"
     >
-      {/* Imagen de fondo */}
-      <div
-        ref={bgRef}
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/loader-bg.jpg')" }}
-      />
+      {/* Imagen de fondo optimizada */}
+      <div ref={bgImgRef} className="absolute inset-0">
+        <Image
+          src="/loader-bg.jpg"
+          alt="Loader background"
+          fill
+          priority
+          unoptimized
+          className="object-cover object-center w-full h-full"
+        />
+      </div>
 
       {/* Overlay para contraste */}
       <div className="absolute inset-0 bg-black/70" />
 
-      {/* Contenido */}
+      {/* Contenido principal */}
       <div className="relative z-10 flex flex-col items-center justify-center">
         {/* Título animado */}
         <h1
