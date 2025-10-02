@@ -3,11 +3,8 @@
 import { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-gsap.registerPlugin(ScrollTrigger);
 
 export default function Hero() {
-  const videoRef = useRef<HTMLVideoElement>(null);
   const h1Ref = useRef<HTMLHeadingElement>(null);
   const copyRef = useRef<HTMLParagraphElement>(null);
   const btnsRef = useRef<HTMLDivElement>(null);
@@ -20,16 +17,11 @@ export default function Hero() {
 
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
       tl.fromTo(
-        videoRef.current!,
-        { opacity: 0, scale: 1.05 },
-        { opacity: 1, scale: 1, duration: 1 }
+        h1Ref.current!,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6 },
+        0.3
       )
-        .fromTo(
-          h1Ref.current!,
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.6 },
-          0.3
-        )
         .fromTo(
           copyRef.current!,
           { opacity: 0, y: 20 },
@@ -42,19 +34,6 @@ export default function Hero() {
           { opacity: 1, y: 0, duration: 0.6, stagger: 0.1 },
           0.8
         );
-
-      if (videoRef.current) {
-        gsap.to(videoRef.current, {
-          scale: 1.15,
-          ease: "none",
-          scrollTrigger: {
-            trigger: "#hero",
-            start: "top top",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-      }
     });
     return () => ctx.revert();
   }, []);
@@ -67,17 +46,13 @@ export default function Hero() {
       {/* Fondo degradado verde atrás */}
       <div className="absolute inset-0 bg-gradient-to-b from-green-950 via-green-900 to-green-700" />
 
-      {/* Video de fondo */}
-      <video
-        ref={videoRef}
-        className="absolute inset-0 h-full w-full object-cover opacity-90"
-        src="/ciencias.mp4"
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="auto"
-        poster="/ciencias-poster.jpg"
+      {/* Imagen de fondo */}
+      <Image
+        src="/hero.jpg"
+        alt="Noche de las Ciencias"
+        fill
+        className="object-cover opacity-90"
+        priority
       />
 
       {/* Overlay con verde + negro */}
@@ -119,10 +94,7 @@ export default function Hero() {
         </p>
 
         {/* Botones */}
-        <div
-          ref={btnsRef}
-          className="mt-7 flex gap-5 flex-wrap justify-center"
-        >
+        <div ref={btnsRef} className="mt-7 flex gap-5 flex-wrap justify-center">
           <a
             href="#destacados"
             className="px-6 py-2.5 rounded-full 
