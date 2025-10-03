@@ -14,7 +14,7 @@ const fotos = [
   '/feria7.jpg',
   '/feria8.jpg',
   '/feria9.jpg',
-  '/feria10.jpg',
+  '/feria10.JPG',
 ]
 
 function posByIndex(i: number) {
