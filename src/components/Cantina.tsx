@@ -50,18 +50,18 @@ export default function Cantina() {
           </div>
 
           {/* Lista de precios */}
-          <div className="mt-8 bg-white rounded-xl shadow-md p-6 max-w-2xl mx-auto border border-yellow-200">
-            <h3 className="text-lg font-bold text-green-800 mb-4">Lista de precios</h3>
-            <ul className="space-y-2 text-gray-800 font-medium">
-             <li>• Dulce de leche <span className="italic">&quot;Latata&quot;</span> — $6.000 Kg</li>
-<li>• Quesos <span className="italic">&quot;M&quot;</span> (Estancias Las Carreras)</li>
-<li>• Caja de alfajores <span className="italic">&quot;Alfatuc&quot;</span> x18 — $5.000</li>
+          {/* Lista de precios */}
+<div className="mt-8 bg-white rounded-xl shadow-md p-6 max-w-2xl mx-auto border border-yellow-200">
+  <h3 className="text-lg font-bold text-green-800 mb-4">Lista de precios</h3>
+  <ul className="space-y-2 text-gray-800 font-medium">
+    <li>• Dulce de leche <span className="italic">&quot;Latata&quot;</span> — $6.000 Kg</li>
+    <li>• Quesos <span className="italic">&quot;M&quot;</span> (Estancias Las Carreras)</li>
+    <li>• Caja de alfajores <span className="italic">&quot;Alfatuc&quot;</span> x18 — $5.000</li>
+    <li>• Bolsa de limones — $1.000</li>
+    <li>• Miel pura de abeja — $5.000 (½ Kg) · $9.000 (Kg)</li>
+  </ul>
+</div>
 
-              <li>• Bolsa de limones — $1.000</li>
-              <li>• Caja de alfajores <span className="italic">"Alfatuc"</span> x18 — $5.000</li>
-              <li>• Miel pura de abeja — $5.000 (½ Kg) · $9.000 (Kg)</li>
-            </ul>
-          </div>
         </div>
 
         {/* 🔹 Cantina Normal */}
