@@ -8,13 +8,13 @@ type Categoria = 'comidas' | 'bebidas'
 
 const cantinaItems = {
   comidas: [
-    { nombre: 'Media docena', precio: '$10.000', img: '/cantina/empanadas.jpg' },
-    { nombre: 'Hamburguesa', precio: '$---', img: '/cantina/hamburguesa.jpg' }, // completar precio real
+    { nombre: 'Media docena de empanadas', img: '/cantina/empanadas.jpg' },
+    { nombre: 'Hamburguesa', img: '/cantina/hamburguesa.jpg' },
   ],
   bebidas: [
-    { nombre: 'Coca Cola', precio: '$---', img: '/cantina/coca.jpg' },
-    { nombre: 'Cerveza', precio: '$---', img: '/cantina/cerveza.jpg' },
-    { nombre: 'Agua mineral', precio: '$---', img: '/cantina/agua.jpg' },
+    { nombre: 'Coca Cola', img: '/cantina/coca.jpg' },
+    { nombre: 'Cerveza', img: '/cantina/cerveza.jpg' },
+    { nombre: 'Agua mineral', img: '/cantina/agua.jpg' },
   ],
 }
 
@@ -28,10 +28,10 @@ export default function Cantina() {
     >
       <div className="container mx-auto px-4">
 
-        {/* 🔹 Kiosco Solidario */}
+        {/* 🔹 Venta de productos regionales */}
         <div className="mb-16">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-green-800 text-center">
-            🛒 Kiosco Solidario
+            🛒 Venta de productos regionales
           </h2>
           <p className="mt-2 text-center text-gray-700 font-medium">
             Todo lo recaudado se destina al techo del colegio 🏫✨
@@ -49,19 +49,18 @@ export default function Cantina() {
             />
           </div>
 
-          {/* Lista de precios */}
-          {/* Lista de precios */}
-<div className="mt-8 bg-white rounded-xl shadow-md p-6 max-w-2xl mx-auto border border-yellow-200">
-  <h3 className="text-lg font-bold text-green-800 mb-4">Lista de precios</h3>
-  <ul className="space-y-2 text-gray-800 font-medium">
-    <li>• Dulce de leche <span className="italic">&quot;Latata&quot;</span> — $6.000 Kg</li>
-    <li>• Quesos <span className="italic">&quot;M&quot;</span> (Estancias Las Carreras)</li>
-    <li>• Caja de alfajores <span className="italic">&quot;Alfatuc&quot;</span> x18 — $5.000</li>
-    <li>• Bolsa de limones — $1.000</li>
-    <li>• Miel pura de abeja — $5.000 (½ Kg) · $9.000 (Kg)</li>
-  </ul>
-</div>
-
+          {/* Lista de productos (sin precios) */}
+          <div className="mt-8 bg-white rounded-xl shadow-md p-6 max-w-2xl mx-auto border border-yellow-200">
+            <h3 className="text-lg font-bold text-green-800 mb-4">Lista de productos</h3>
+            <ul className="space-y-2 text-gray-800 font-medium">
+              <li>• Dulce de leche <span className="italic">&quot;Latata&quot;</span></li>
+              <li>• Tabletas de dulce de leche</li>
+              <li>• Quesos <span className="italic">&quot;M&quot;</span> (Estancias Las Carreras)</li>
+              <li>• Bolsa de limones</li>
+              <li>• Caja de alfajores <span className="italic">&quot;Alfatuc&quot;</span></li>
+              <li>• Miel pura de abeja</li>
+            </ul>
+          </div>
         </div>
 
         {/* 🔹 Cantina Normal */}
@@ -127,17 +126,17 @@ export default function Cantina() {
               transition={{ duration: 0.3, delay: i * 0.05 }}
               className="bg-white rounded-xl shadow-md hover:shadow-lg overflow-hidden transition"
             >
-              <div className="relative w-full h-40">
-                <Image
-                  src={item.img}
-                  alt={item.nombre}
-                  fill
-                  className="object-cover"
-                />
-              </div>
+              <div className="relative w-full h-40 flex items-center justify-center bg-gray-50">
+  <Image
+    src={item.img}
+    alt={item.nombre}
+    fill
+    className="object-contain p-2"
+  />
+</div>
+
               <div className="p-4">
                 <h3 className="font-semibold text-yellow-800">{item.nombre}</h3>
-                <p className="mt-1 text-green-700 font-bold">{item.precio}</p>
               </div>
             </motion.div>
           ))}

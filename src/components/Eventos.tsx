@@ -8,13 +8,13 @@ import { motion } from 'framer-motion'
 type Item = { titulo: string; photo: string; alt: string }
 
 const FERIA: Item[] = [
-  { titulo: 'Experimentos',        photo: '/feriaE.jpg', alt: 'Niños haciendo experimentos' },
+  { titulo: 'Experimentos',        photo: '/feriaAs.png', alt: 'Niños haciendo experimentos' },
   { titulo: 'Robótica',            photo: '/feriaR.JPG', alt: 'Robots en exhibición' },
   { titulo: 'Música',              photo: '/feriaM.JPG', alt: 'Presentación musical' },
   { titulo: 'Arte & Ciencia',      photo: '/feriaA.JPG', alt: 'Exposición de arte científico' },
   { titulo: 'Stands',              photo: '/feriaS.JPG', alt: 'Puestos y stands' },
   { titulo: 'Charlas científicas', photo: '/feria6.jpg', alt: 'Charla de ciencia' },
-  { titulo: 'Astronomía',          photo: '/feriaAs.png', alt: 'Observación de estrellas' },
+  { titulo: 'Astronomía',          photo: '/feriaE.jpg', alt: 'Observación de estrellas' },
   { titulo: 'Laboratorio',         photo: '/feriaL.JPG', alt: 'Prácticas de laboratorio' },
 ]
 
@@ -22,7 +22,7 @@ export default function FeriaCards() {
   const stageRef = useRef<HTMLDivElement | null>(null)
   const cardRefs = useRef<HTMLDivElement[]>([])
   const [i, setI] = useState(0)
-  const [showModal, setShowModal] = useState<null | 'colgados' | 'otra'>(null)
+  const [showModal, setShowModal] = useState<null | 'colgados' | 'atari'>(null)
 
   const len = FERIA.length
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 640
@@ -199,10 +199,10 @@ export default function FeriaCards() {
               Banda Colgados – 21:30 hs
             </button>
             <button
-              onClick={() => setShowModal('otra')}
+              onClick={() => setShowModal('atari')}
               className="px-6 py-4 rounded-xl bg-green-200 hover:bg-green-300 text-green-900 font-bold shadow-md transition"
             >
-              Otra banda – 22:30 hs
+               Banda Atari – 22:00 hs
             </button>
           </div>
         </div>
@@ -210,38 +210,68 @@ export default function FeriaCards() {
 
       {/* Modal Colgados */}
       {showModal === 'colgados' && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
-          onClick={() => setShowModal(null)}>
-          <div className="bg-white max-w-2xl rounded-2xl p-6 shadow-lg relative" onClick={(e) => e.stopPropagation()}>
-            <button onClick={() => setShowModal(null)} className="absolute top-3 right-3 text-lg">✕</button>
-            <h4 className="text-2xl font-bold text-green-900">Colgados</h4>
-            <p className="mt-2 text-gray-700">
-              Colgados es una banda de rock de Tucumán formada en 2021, nacida del encuentro entre alumnos del músico y profesor Mauro Ros.
-              Desde entonces, han recorrido escenarios en radios, colegios, eventos municipales y teatros.
-              Cuentan con un álbum tributo a varios artistas y actualmente se encuentran desarrollando nuevos proyectos musicales.
-            </p>
-            <p className="mt-3 text-gray-800 font-medium">
-              Integrantes: Juan Pablo Navarro, Santiago José Peverelli, Celeste Torán, Lisandro Maidana y Tomás José Frontini.
-            </p>
-            <p className="mt-4 font-bold text-yellow-700">Horario: 21:30 hs</p>
-          </div>
-        </motion.div>
-      )}
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
+    onClick={() => setShowModal(null)}
+  >
+    <div
+      className="bg-white max-w-md rounded-2xl p-6 shadow-lg relative"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <button
+        onClick={() => setShowModal(null)}
+        className="absolute top-3 right-3 text-lg"
+      >
+        ✕
+      </button>
+      <h4 className="text-2xl font-bold text-green-900">Colgados</h4>
+      <p className="mt-3 text-gray-700">
+        Banda de rock tucumana formada en 2021 bajo la guía del músico Mauro Ros. Han recorrido escenarios en radios, colegios y teatros, y cuentan con un álbum tributo a grandes artistas.
+      </p>
+      <p className="mt-3 text-gray-800 font-medium">
+        <strong>Integrantes:</strong>  
+        Juan Pablo Navarro (guitarra y voz), Santiago José Peverelli (guitarra y voz), Celeste Torán (teclado y coros),  
+        Lisandro Maidana (bajo) y Tomás José Frontini (batería y voz, exalumno del Colegio Pucará).
+      </p>
+      <p className="mt-5 font-bold text-yellow-700">Horario: 21:30 hs</p>
+    </div>
+  </motion.div>
+)}
 
-      {/* Modal Otra banda */}
-      {showModal === 'otra' && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
-          onClick={() => setShowModal(null)}>
-          <div className="bg-white max-w-md rounded-2xl p-6 shadow-lg relative" onClick={(e) => e.stopPropagation()}>
-            <button onClick={() => setShowModal(null)} className="absolute top-3 right-3 text-lg">✕</button>
-            <h4 className="text-2xl font-bold text-green-900">Otra banda</h4>
-            <p className="mt-2 text-gray-700">Próximamente más info sobre esta banda invitada.</p>
-            <p className="mt-4 font-bold text-yellow-700">Horario: 22:30 hs</p>
-          </div>
-        </motion.div>
-      )}
+
+      {/* Modal ATARI */}
+{showModal === 'atari' && (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
+    onClick={() => setShowModal(null)}
+  >
+    <div
+      className="bg-white max-w-md rounded-2xl p-6 shadow-lg relative"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <button
+        onClick={() => setShowModal(null)}
+        className="absolute top-3 right-3 text-lg"
+      >
+        ✕
+      </button>
+      <h4 className="text-2xl font-bold text-green-900">ATARI</h4>
+      <p className="mt-3 text-gray-700">
+        Banda tucumana formada en 2008 en Yerba Buena. Reviven clásicos del rock nacional de los 80 y 90, con temas de Soda Stereo, Los Fabulosos Cadillacs, Serú Girán, Charly García y más.
+      </p>
+      <p className="mt-3 text-gray-800 font-medium">
+        Integrantes: Sergio Vera (voz), Gabriel Ferro y Maxi López Sepic (guitarras), Luis Pérez Zamora (teclados), Gustavo Torres (bajo) y Martín García Navarro (batería).
+      </p>
+      <p className="mt-5 font-bold text-yellow-700">Horario: 22:00 hs</p>
+    </div>
+  </motion.div>
+)}
+
+
     </section>
   )
 }

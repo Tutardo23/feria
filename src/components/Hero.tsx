@@ -108,12 +108,12 @@ export default function Hero() {
         {/* Botones */}
         <div ref={btnsRef} className="mt-8 flex gap-5 flex-wrap justify-center">
           <a
-            href="#destacados"
+            href="#cantina"
             className="px-6 py-2.5 rounded-full 
                        bg-[#F5C242] text-[#0C2D57] font-semibold text-sm 
                        shadow-lg hover:shadow-xl hover:scale-105 transition-transform"
           >
-            Ver destacados
+            Ver cantina
           </a>
           <a
             href="#buscar"
