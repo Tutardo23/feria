@@ -9,7 +9,7 @@ export default function AvisoMusical() {
 
   useEffect(() => {
     if (!avisoCerrado) {
-      const timer = setTimeout(() => setShowAviso(true), 15000) // 10 segundos
+      const timer = setTimeout(() => setShowAviso(true), 15000) // 15 segundos
       return () => clearTimeout(timer)
     }
   }, [avisoCerrado])
@@ -30,7 +30,8 @@ export default function AvisoMusical() {
       >
         <h4 className="text-lg font-bold text-green-900 mb-2">🎶 Atención</h4>
         <p className="text-sm text-green-800 mb-4">
-          ¡No te olvides de visitar la <strong>banda musical</strong> y disfrutar de su presentación!
+          ¡No te olvides de visitar la <strong>banda musical</strong> y disfrutar de su presentación! <br />
+          🎉 Además, la <strong>cantina</strong> ya está disponible con comidas y bebidas.
         </p>
         <button
           onClick={() => { setShowAviso(false); setAvisoCerrado(true) }}

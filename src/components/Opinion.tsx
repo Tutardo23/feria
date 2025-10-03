@@ -166,10 +166,18 @@ export default function Despedida() {
           </div>
 
           <div className="flex flex-col md:flex-row justify-center gap-4 font-medium">
-            <a href="#inicio" className="hover:text-yellow-400 transition">Inicio</a>
-            <a href="#destacados" className="hover:text-yellow-400 transition">Eventos</a>
+            <a href="#hero" className="hover:text-yellow-400 transition">Inicio</a>
+            <a href="#recuerdos" className="hover:text-yellow-400 transition">Recuerdos</a>
             <a href="#buscar" className="hover:text-yellow-400 transition">Cursos</a>
-            <a href="#contacto" className="hover:text-yellow-400 transition">Contacto</a>
+            <a 
+  href="https://pucara.apdes.edu.ar/" 
+  target="_blank" 
+  rel="noopener noreferrer" 
+  className="hover:text-yellow-400 transition"
+>
+  Contacto
+</a>
+
           </div>
 
           <div className="flex flex-col items-center md:items-end text-sm text-white/80">

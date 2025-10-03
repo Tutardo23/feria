@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import gsap from 'gsap'
 import { dataSecundaria } from './dataSecundaria'
+import Image from 'next/image'
 
 type Categoria = 'primaria' | 'secundaria' | 'especiales'
 
@@ -23,49 +24,85 @@ const data: Record<Categoria, Record<string, Division[]>> = {
   primaria: {
     '1° Grado': [
       {
-        id: 'General',
+        id: 'A',
         grupos: [
-          { tema: 'Nuestras raíces: Tradiciones de familias tucumanas', integrantes: [], hora: '19:30 a 21:00', lugar: 'Aulas de 1° Grado A y B' },
+          { tema: 'Nuestras raíces: Tradiciones de familias tucumanas', integrantes: [], hora: '19:00 a 20:00', lugar: 'Aulas de 1° Grado A y B' },
+        ],
+      },
+      {
+        id: 'B',
+        grupos: [
+          { tema: 'Nuestras raíces: Tradiciones de familias tucumanas', integrantes: [], hora: '20:00 a 21:00', lugar: 'Aulas de 1° Grado A y B' },
         ],
       },
     ],
     '2° Grado': [
       {
-        id: 'General',
+        id: 'A',
         grupos: [
-          { tema: 'Tucumán para saborear y celebrar – Turismo cultural y gastronomía tradicional', integrantes: [], hora: '19:30 a 21:00', lugar: 'Aula de 2° Grado A' },
+          { tema: 'Tucumán para saborear y celebrar – Turismo cultural y gastronomía tradicional', integrantes: [], hora: '19:00 a 20:00', lugar: 'Aula de 2° Grado A' },
+        ],
+      },
+      {
+        id: 'B',
+        grupos: [
+          { tema: 'Tucumán para saborear y celebrar – Turismo cultural y gastronomía tradicional', integrantes: [], hora: '20:00 a 21:00', lugar: 'Aula de 2° Grado A' },
         ],
       },
     ],
     '3° Grado': [
       {
-        id: 'General',
+        id: 'A',
         grupos: [
-          { tema: 'Arte y expresiones culturales de Tucumán', integrantes: [], hora: '19:30 a 21:00', lugar: 'Aula de 3° Grado B' },
+          { tema: 'Arte y expresiones culturales de Tucumán', integrantes: [], hora: '19:00 a 20:00', lugar: 'Aula de 3° Grado B' },
+        ],
+      },
+      {
+        id: 'B',
+        grupos: [
+          { tema: 'Arte y expresiones culturales de Tucumán', integrantes: [], hora: '20:00 a 21:00', lugar: 'Aula de 3° Grado B' },
         ],
       },
     ],
     '4° Grado': [
       {
-        id: 'General',
+        id: 'A',
         grupos: [
-          { tema: 'Próceres tucumanos, héroes de la historia', integrantes: [], hora: '19:30 a 21:00', lugar: 'Aulas de 4° Grado A y B' },
+          { tema: 'Próceres tucumanos, héroes de la historia', integrantes: [], hora: '19:00 a 20:00', lugar: 'Aulas de 4° Grado A y B' },
+        ],
+      },
+      {
+        id: 'B',
+        grupos: [
+          { tema: 'Próceres tucumanos, héroes de la historia', integrantes: [], hora: '20:00 a 21:00', lugar: 'Aulas de 4° Grado A y B' },
         ],
       },
     ],
     '5° Grado': [
       {
-        id: 'General',
+        id: 'A',
         grupos: [
-          { tema: 'Explorando los orígenes: De los astros a la dulzura de la caña', integrantes: [], hora: '19:30 a 21:00', lugar: 'Entrada del colegio' },
+          { tema: 'Explorando los orígenes: De los astros a la dulzura de la caña', integrantes: [], hora: '19:00 a 20:00', lugar: 'Entrada del colegio' },
+        ],
+      },
+      {
+        id: 'B',
+        grupos: [
+          { tema: 'Explorando los orígenes: De los astros a la dulzura de la caña', integrantes: [], hora: '20:00 a 21:00', lugar: 'Entrada del colegio' },
         ],
       },
     ],
     '6° Grado': [
       {
-        id: 'General',
+        id: 'A',
         grupos: [
-          { tema: 'El maíz – súper alimento, da vida y cultura', integrantes: [], hora: '19:30 a 21:00', lugar: 'Aulas de 6° Grado A y B' },
+          { tema: 'El maíz – súper alimento, da vida y cultura', integrantes: [], hora: '19:00 a 20:00', lugar: 'Aulas de 6° Grado A y B' },
+        ],
+      },
+      {
+        id: 'B',
+        grupos: [
+          { tema: 'El maíz – súper alimento, da vida y cultura', integrantes: [], hora: '20:00 a 21:00', lugar: 'Aulas de 6° Grado A y B' },
         ],
       },
     ],
@@ -122,6 +159,12 @@ export default function Cursos() {
   const [query, setQuery] = useState('')
   const [cursoActivo, setCursoActivo] = useState<string | null>(null)
   const [divisionActiva, setDivisionActiva] = useState<Division | null>(null)
+
+  const [poemaOpen, setPoemaOpen] = useState(false)
+  const poemaRef = useRef<HTMLDivElement>(null)
+  const versosRef = useRef<HTMLParagraphElement>(null)
+  const titleRef = useRef<HTMLHeadingElement>(null)
+
   const modalRef = useRef<HTMLDivElement>(null)
   const bgRef = useRef<HTMLDivElement>(null)
 
@@ -144,29 +187,29 @@ export default function Cursos() {
 
   /* --------- Esc + bloqueo scroll --------- */
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') { setCursoActivo(null); setDivisionActiva(null) } }
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') { setCursoActivo(null); setDivisionActiva(null); setPoemaOpen(false) } }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
+  /* --------- Animación GSAP para poema --------- */
   useEffect(() => {
-    const html = document.documentElement
-    const prevHtmlOverflow = html.style.overflow
-    const prevBodyOverflow = document.body.style.overflow
-
-    if (cursoActivo) {
-      html.style.overflow = 'hidden'
-      document.body.style.overflow = 'hidden'
-    } else {
-      html.style.overflow = prevHtmlOverflow
-      document.body.style.overflow = prevBodyOverflow
-    }
-
-    return () => {
-      html.style.overflow = prevHtmlOverflow
-      document.body.style.overflow = prevBodyOverflow
-    }
-  }, [cursoActivo])
+    if (!poemaOpen || !poemaRef.current) return
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: "power4.out" } })
+      tl.fromTo(titleRef.current,
+        { opacity: 0, y: 40, skewY: 6, filter: "blur(6px)" },
+        { opacity: 1, y: 0, skewY: 0, filter: "blur(0px)", duration: 0.8 }
+      )
+      const spans = versosRef.current?.querySelectorAll("span") || []
+      tl.fromTo(spans,
+        { opacity: 0, y: 20, filter: "blur(4px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", stagger: 0.1, duration: 0.5 },
+        "-=0.4"
+      )
+    }, poemaRef)
+    return () => ctx.revert()
+  }, [poemaOpen])
 
   const cursosDeCategoria = useMemo(() => Object.keys(data[categoria]), [categoria])
   const cursosFiltrados = useMemo(() => {
@@ -176,7 +219,7 @@ export default function Cursos() {
   }, [cursosDeCategoria, query])
 
   const divisiones = cursoActivo ? data[categoria][cursoActivo] : []
-
+const [mapaOpen, setMapaOpen] = useState(false)
   return (
     <section id="buscar" className="relative py-20 bg-gradient-to-br from-green-50 to-yellow-50 overflow-hidden">
       {/* Fondo decorativo */}
@@ -234,6 +277,20 @@ export default function Cursos() {
           </div>
         </div>
 
+        {/* Botón del poema solo en Primaria */}
+        {categoria === "primaria" && (
+  <div className="mb-6 flex justify-start">
+    <button
+      onClick={() => setPoemaOpen(true)}
+      className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-100 hover:bg-green-200 text-green-800 text-xs font-medium shadow-sm transition"
+    >
+      <span className="text-lg">⛰️</span>
+      <span>Poema</span>
+    </button>
+  </div>
+)}
+
+
         {/* Grid de cursos */}
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {cursosFiltrados.map((curso) => (
@@ -250,7 +307,48 @@ export default function Cursos() {
         </motion.div>
       </div>
 
-      {/* Modal */}
+      {/* Modal Poema */}
+      {poemaOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={() => setPoemaOpen(false)}>
+          <motion.div
+            ref={poemaRef}
+            onClick={(e) => e.stopPropagation()}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="w-full max-w-2xl rounded-2xl bg-white shadow-xl overflow-hidden"
+          >
+            <div className="flex items-center justify-between border-b border-green-100 bg-green-50 px-4 py-3">
+              <h4 ref={titleRef} className="text-lg font-bold text-green-900">
+                🌄 Tucumán, identidad y ciencia
+              </h4>
+              <button onClick={() => setPoemaOpen(false)} className="text-green-800/70 hover:bg-green-100 rounded-full p-1">×</button>
+            </div>
+            <div className="p-6 text-center">
+              <p ref={versosRef} className="whitespace-pre-line italic text-green-900 leading-relaxed">
+                {`En Tucumán la historia florece,
+sus raíces nos dan identidad,
+la cultura ilumina caminos,
+la ciencia abre puertas a la verdad.
+
+Los niños del Colegio Pucará
+son semillas que miran al cielo,
+con saberes que crecen y vuelan,
+con futuro en cada anhelo.
+
+Porque la tradición nos sostiene,
+y la ciencia nos invita a soñar,
+es en esta tierra tucumana
+donde el mañana empieza a brillar.`.split("\n").map((line, i) => (
+                  <span key={i} className="block">{line}</span>
+                ))}
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Modal Cursos */}
       {cursoActivo && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={() => { setCursoActivo(null); setDivisionActiva(null) }}>
           <motion.div
@@ -264,13 +362,11 @@ export default function Cursos() {
             className="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header */}
             <div className="flex items-center justify-between border-b border-green-100 bg-green-50 px-4 py-3">
               <h4 className="text-lg font-bold text-green-900">{cursoActivo}</h4>
               <button onClick={() => { setCursoActivo(null); setDivisionActiva(null) }} className="rounded-full p-1 text-green-800/70 hover:bg-green-100">×</button>
             </div>
 
-            {/* Paso intermedio si hay varias divisiones */}
             {divisiones.length > 1 && !divisionActiva && (
               <div className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {divisiones.map((div, i) => (
@@ -297,7 +393,6 @@ export default function Cursos() {
               </div>
             )}
 
-            {/* Mostrar grupos */}
             {(divisiones.length === 1 || divisionActiva) && (
               <div className="max-h-[70vh] overflow-y-auto overscroll-contain p-4 space-y-4">
                 {(divisionActiva ? divisionActiva.grupos : divisiones[0].grupos).map((g, i) => (
@@ -327,6 +422,58 @@ export default function Cursos() {
           </motion.div>
         </div>
       )}
+     {/* 🔹 Mapa del evento */}
+      <div className="mt-16">
+        <h3 className="text-2xl sm:text-3xl font-extrabold text-green-900 text-center">
+          🗺️ Mapa de la Feria
+        </h3>
+        <p className="mt-2 text-center text-green-800/80">
+          Ubicaciones de los stands, cursos y espacios
+        </p>
+
+        {/* Imagen que abre modal */}
+        <div
+          onClick={() => setMapaOpen(true)}
+          className="mt-6 max-w-5xl mx-auto rounded-xl overflow-hidden shadow-lg border border-green-200 cursor-pointer hover:scale-[1.02] transition"
+        >
+          <Image
+            src="/mapa.png"
+            alt="Mapa completo de la feria"
+            width={1200}
+            height={800}
+            className="w-full h-auto object-contain"
+          />
+        </div>
+      </div>
+
+      {/* 🔹 Modal con zoom */}
+      {mapaOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+          onClick={() => setMapaOpen(false)}
+        >
+          <div className="relative w-full max-w-6xl h-[85vh]">
+            <Image
+              src="/mapa.png"
+              alt="Mapa Feria ampliado"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
+          {/* Botón cerrar */}
+          <button
+            onClick={() => setMapaOpen(false)}
+            className="absolute top-5 right-5 bg-white/90 text-black px-3 py-1.5 rounded-full shadow hover:bg-white"
+          >
+            ✕
+          </button>
+        </motion.div>
+      )}
     </section>
   )
 }
+ 
