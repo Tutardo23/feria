@@ -8,13 +8,13 @@ import { motion } from 'framer-motion'
 type Item = { titulo: string; photo: string; alt: string }
 
 const FERIA: Item[] = [
-  { titulo: 'Experimentos',        photo: '/feriaE.JPG', alt: 'Niños haciendo experimentos' },
+  { titulo: 'Experimentos',        photo: '/feriaE.jpg', alt: 'Niños haciendo experimentos' },
   { titulo: 'Robótica',            photo: '/feriaR.JPG', alt: 'Robots en exhibición' },
   { titulo: 'Música',              photo: '/feriaM.JPG', alt: 'Presentación musical' },
   { titulo: 'Arte & Ciencia',      photo: '/feriaA.JPG', alt: 'Exposición de arte científico' },
   { titulo: 'Stands',              photo: '/feriaS.JPG', alt: 'Puestos y stands' },
   { titulo: 'Charlas científicas', photo: '/feria6.jpg', alt: 'Charla de ciencia' },
-  { titulo: 'Astronomía',          photo: '/feriaAs.jpg', alt: 'Observación de estrellas' },
+  { titulo: 'Astronomía',          photo: '/feriaAs.png', alt: 'Observación de estrellas' },
   { titulo: 'Laboratorio',         photo: '/feriaL.JPG', alt: 'Prácticas de laboratorio' },
 ]
 
