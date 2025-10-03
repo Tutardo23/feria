@@ -85,7 +85,7 @@ export default function Cantina() {
               className="h-1 w-20 ml-auto mt-2 rounded-full bg-green-700"
             />
             <p className="mt-3 text-gray-700">
-              Opciones de comidas y bebidas disponibles durante la feria.
+              Disfrutá de nuestras comidas y bebidas durante la feria. Todo lo recaudado será destinado a beneficio.
             </p>
 
             {/* Tabs categorías */}
