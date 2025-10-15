@@ -1,138 +1,208 @@
 "use client";
-
-import { useLayoutEffect, useRef } from "react";
-import Image from "next/image";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 
-export default function Hero() {
-  const h1Ref = useRef<HTMLHeadingElement>(null);
-  const copyRef = useRef<HTMLParagraphElement>(null);
-  const btnsRef = useRef<HTMLDivElement>(null);
+gsap.registerPlugin(ScrollTrigger);
 
-  useLayoutEffect(() => {
+export default function HeroCerrosFinal() {
+  const rootRef = useRef<HTMLElement | null>(null);
+  const ringsRef = useRef<HTMLDivElement | null>(null);
+  const sweepRef = useRef<HTMLDivElement | null>(null);
+  const circleTextRef = useRef<SVGSVGElement | null>(null);
+  const logoRef = useRef<HTMLDivElement | null>(null);
+  const nocheRef = useRef<HTMLHeadingElement | null>(null);
+  const cienciasRef = useRef<HTMLHeadingElement | null>(null);
+
+  useEffect(() => {
+    if (!rootRef.current) return;
+
     const ctx = gsap.context(() => {
-      const btns = Array.from(
-        btnsRef.current?.querySelectorAll<HTMLElement>("a") ?? []
+      // === animaciones originales ===
+      gsap.to(rootRef.current, { duration: 12, repeat: -1, ease: "none", "--angle": 360 });
+      gsap.fromTo(
+        sweepRef.current,
+        { xPercent: -120, opacity: 0.18 },
+        { xPercent: 120, opacity: 0.28, duration: 2.2, ease: "power2.out", repeat: -1, repeatDelay: 3 }
       );
+      gsap.to(circleTextRef.current, {
+        rotate: -360, transformOrigin: "50% 50%", duration: 40, repeat: -1, ease: "none",
+      });
+      gsap.to(logoRef.current, { scale: 1.04, duration: 3, ease: "sine.inOut", repeat: -1, yoyo: true });
 
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      // === EFECTO NUEVO: "STRETCH" PARA NOCHE Y CIENCIAS ===
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
+
+      // entrada + estiramiento tipo rebote
       tl.fromTo(
-        h1Ref.current!,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6 },
-        0.3
+        nocheRef.current,
+        { scaleY: 0.8, scaleX: 1.4, opacity: 0, filter: "blur(10px)" },
+        {
+          scaleY: 1.15,
+          scaleX: 0.95,
+          opacity: 1,
+          filter: "blur(0px)",
+          duration: 1.2,
+          ease: "elastic.out(1, 0.6)",
+        }
       )
+        .to(nocheRef.current, {
+          scaleY: 1,
+          scaleX: 1,
+          duration: 0.6,
+          ease: "power2.out",
+        })
         .fromTo(
-          copyRef.current!,
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.6 },
-          0.5
+          cienciasRef.current,
+          { scaleY: 0.8, scaleX: 1.4, opacity: 0, filter: "blur(10px)" },
+          {
+            scaleY: 1.15,
+            scaleX: 0.95,
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 1.2,
+            ease: "elastic.out(1, 0.6)",
+          },
+          "-=0.3"
         )
-        .fromTo(
-          btns,
-          { opacity: 0, y: 15 },
-          { opacity: 1, y: 0, duration: 0.6, stagger: 0.1 },
-          0.8
-        );
-    });
+        .to(cienciasRef.current, {
+          scaleY: 1,
+          scaleX: 1,
+          duration: 0.6,
+          ease: "power2.out",
+        });
+
+      // pulso luminoso
+      gsap.to([nocheRef.current, cienciasRef.current], {
+        textShadow: "0 0 20px rgba(252,215,217,0.9)",
+        color: "#fff",
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+    }, rootRef);
+
     return () => ctx.revert();
   }, []);
 
   return (
     <section
-      id="hero"
-      className="relative h-screen w-full overflow-hidden bg-black text-white"
+      ref={rootRef}
+      className="relative isolate min-h-[100svh] w-full overflow-hidden text-white bg-transparent"
+      style={{ ["--angle" as any]: 0 }}
     >
-      {/* Fondo degradado verde atrás */}
-      <div className="absolute inset-0 bg-gradient-to-b from-green-950 via-green-900 to-green-700" />
-
-      {/* Imagen de fondo */}
-      <Image
-        src="/hero.jpg"
-        alt="Noche de las Ciencias"
-        fill
-        className="object-cover opacity-90"
-        priority
-      />
-
-      {/* Overlay con verde + negro */}
-      <div className="absolute inset-0 bg-gradient-to-b from-green-950/70 via-green-900/40 to-green-950/70 mix-blend-multiply" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/40" />
-
-      {/* Contenido */}
-      <div className="relative z-10 flex h-full flex-col items-center justify-center text-center px-6">
-        {/* Logo */}
-        <div className="mb-5">
+      {/* === FONDO === */}
+      <div className="absolute inset-0 z-0">
+        <div className="relative h-full w-full">
           <Image
-            src="/logo-colegio.png"
-            alt="Colegio Pucará"
-            width={85}
-            height={85}
-            className="drop-shadow-lg"
+            src="/entrada.png"
+            alt="Entrada Colegio Los Cerros"
+            fill
+            priority
+            className="object-cover object-center"
           />
         </div>
-
-        {/* Título */}
-        <h1
-          ref={h1Ref}
-          className="mt-[-1rem] text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight"
-          style={{ textShadow: "0 3px 10px rgba(0,0,0,.6)" }}
-        >
-          NOCHE DE LAS <span className="text-[#F5C242]">CIENCIAS</span>
-        </h1>
-
-        {/* Subtítulo */}
-        <p
-          ref={copyRef}
-          className="mt-3 text-base sm:text-lg tracking-wide uppercase text-white/90"
-        >
-          EDICIÓN XI · 2025
-        </p>
-
-        <p className="mt-2 max-w-xl text-sm sm:text-base text-white/80">
-          Un encuentro para descubrir, experimentar y compartir el conocimiento.
-        </p>
-
-        {/* Botones */}
-        <div ref={btnsRef} className="mt-7 flex gap-5 flex-wrap justify-center">
-          <a
-            href="#destacados"
-            className="px-6 py-2.5 rounded-full 
-                       bg-[#F5C242] text-[#0C2D57] font-semibold text-sm 
-                       shadow-lg hover:shadow-xl hover:scale-105 transition"
-          >
-            Ver destacados
-          </a>
-          <a
-            href="#buscar"
-            className="px-6 py-2.5 rounded-full border-2 border-white 
-                       bg-transparent text-white font-semibold text-sm
-                       hover:bg-white hover:text-green-900 hover:scale-105 transition"
-          >
-            Buscar mi curso
-          </a>
-        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#7A1C32]/50 via-[#5E1527]/60 to-[#2A0B13]/70 sm:from-[#7A1C32]/40 sm:via-[#5E1527]/50 sm:to-[#2A0B13]/60" />
       </div>
 
-      {/* Curva inferior */}
-      <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 80"
-          preserveAspectRatio="none"
-          className="w-full h-14"
+      {/* === EFECTOS === */}
+      <div
+        className="absolute inset-0 z-10 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(900px 900px at 50% 50%, rgba(252,215,217,0.12), transparent 70%)",
+        }}
+      />
+      <div
+        className="absolute inset-0 z-10 pointer-events-none"
+        style={{
+          background:
+            "conic-gradient(from calc(var(--angle)*1deg), transparent 0deg, rgba(122,28,50,0.22) 120deg, transparent 360deg)",
+        }}
+      />
+      <div
+        ref={sweepRef}
+        className="absolute z-20 top-[12%] left-0 h-48 w-[36%] origin-left skew-x-12 pointer-events-none"
+        style={{
+          background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent)",
+          filter: "blur(6px)",
+          mixBlendMode: "screen",
+        }}
+      />
+
+      {/* === CÍRCULO ENERGÉTICO === */}
+      <div ref={ringsRef} className="absolute inset-0 z-30 flex flex-col items-center justify-center">
+        {/* === TEXTO SUPERIOR === */}
+        <h2
+          ref={nocheRef}
+          className="text-[#FCD7D9] text-2xl sm:text-4xl font-semibold tracking-[0.35em] mb-6 select-none"
         >
-          <path
-            fill="url(#gradiente)"
-            d="M0,32L48,42.7C96,53,192,75,288,74.7C384,75,480,53,576,42.7C672,32,768,32,864,42.7C960,53,1056,75,1152,74.7C1248,75,1344,53,1392,42.7L1440,32L1440,80L0,80Z"
+          NOCHE DE LAS
+        </h2>
+
+        {/* === CÍRCULO === */}
+        <div className="relative flex items-center justify-center">
+          <div
+            data-shard
+            className="relative w-[66vmin] h-[66vmin] rounded-full"
+            style={{
+              background:
+                "conic-gradient(from 0deg, rgba(252,215,217,0.9), rgba(255,255,255,0.45), rgba(124,28,50,0.85))",
+              WebkitMaskImage: "radial-gradient(circle at center, transparent 49%, black 51%)",
+              maskImage: "radial-gradient(circle at center, transparent 49%, black 51%)",
+              filter: "drop-shadow(0 0 22px rgba(252,215,217,0.35))",
+            }}
           />
+
+          {/* === LOGO === */}
+          <div
+            ref={logoRef}
+            className="absolute z-40 w-[28vmin] h-[28vmin] rounded-full overflow-hidden bg-white/10 backdrop-blur-sm border border-white/30 shadow-[0_0_40px_rgba(252,215,217,0.3)]"
+          >
+            <Image src="/logo-cerros.png" alt="Logo Colegio Los Cerros" fill className="object-contain p-3" />
+          </div>
+
+          {/* === SEGUNDO ARO === */}
+          <div
+            data-shard
+            className="absolute w-[50vmin] h-[50vmin] rounded-full"
+            style={{
+              background:
+                "conic-gradient(from 30deg, rgba(255,255,255,0.5), rgba(252,215,217,0.25), rgba(255,255,255,0.5))",
+              WebkitMaskImage: "radial-gradient(circle at center, transparent 62%, black 64%)",
+              maskImage: "radial-gradient(circle at center, transparent 62%, black 64%)",
+              filter: "drop-shadow(0 0 16px rgba(255,255,255,0.25))",
+            }}
+          />
+        </div>
+
+        {/* === TEXTO INFERIOR === */}
+        <h2
+          ref={cienciasRef}
+          className="text-[#FCD7D9] text-2xl sm:text-4xl font-semibold tracking-[0.35em] mt-6 select-none"
+        >
+          CIENCIAS
+        </h2>
+      </div>
+
+      {/* === TEXTO ORBITAL === */}
+      <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center">
+        <svg ref={circleTextRef} width="70vmin" height="70vmin" viewBox="0 0 100 100" className="opacity-90">
           <defs>
-            <linearGradient id="gradiente" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#00572D" />
-              <stop offset="100%" stopColor="#F5C242" />
-            </linearGradient>
+            <path id="orbit" d="M50,50 m-40,0 a40,40 0 1,1 80,0 a40,40 0 1,1 -80,0" fill="none" />
           </defs>
+          <text fill="rgba(255,255,255,0.95)" fontSize="4" letterSpacing="1.2" fontFamily="Outfit, sans-serif">
+            <textPath href="#orbit" startOffset="0%">● LA NOCHE DE LAS CIENCIAS — COLEGIO LOS CERROS — 2025 ●</textPath>
+          </text>
         </svg>
+      </div>
+
+      {/* === INDICADOR INFERIOR === */}
+      <div className="absolute z-40 bottom-5 left-1/2 -translate-x-1/2 text-xs sm:text-sm tracking-widest text-white/85 p-0.1">
+        DESLIZÁ PARA ENTRAR
+        <div className="mt-1 h-px w-24 bg-gradient-to-r from-transparent via-white/70 to-transparent" />
       </div>
     </section>
   );
