@@ -91,7 +91,7 @@ export default function HeroCerrosFinal() {
     <section
       ref={rootRef}
       className="relative isolate min-h-[100svh] w-full overflow-hidden text-white bg-transparent"
-      style={{ ["--angle" as any]: 0 }}
+      style={{ "--angle": 0 } as React.CSSProperties}
     >
       {/* === FONDO === */}
       <div className="absolute inset-0 z-0">
