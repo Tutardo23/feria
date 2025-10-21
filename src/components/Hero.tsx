@@ -19,7 +19,6 @@ export default function HeroCerrosFinal() {
     if (!rootRef.current) return;
 
     const ctx = gsap.context(() => {
-      // === animaciones originales ===
       gsap.to(rootRef.current, { duration: 12, repeat: -1, ease: "none", "--angle": 360 });
       gsap.fromTo(
         sweepRef.current,
@@ -31,10 +30,7 @@ export default function HeroCerrosFinal() {
       });
       gsap.to(logoRef.current, { scale: 1.04, duration: 3, ease: "sine.inOut", repeat: -1, yoyo: true });
 
-      // === EFECTO NUEVO: "STRETCH" PARA NOCHE Y CIENCIAS ===
       const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
-
-      // entrada + estiramiento tipo rebote
       tl.fromTo(
         nocheRef.current,
         { scaleY: 0.8, scaleX: 1.4, opacity: 0, filter: "blur(10px)" },
@@ -47,12 +43,7 @@ export default function HeroCerrosFinal() {
           ease: "elastic.out(1, 0.6)",
         }
       )
-        .to(nocheRef.current, {
-          scaleY: 1,
-          scaleX: 1,
-          duration: 0.6,
-          ease: "power2.out",
-        })
+        .to(nocheRef.current, { scaleY: 1, scaleX: 1, duration: 0.6, ease: "power2.out" })
         .fromTo(
           cienciasRef.current,
           { scaleY: 0.8, scaleX: 1.4, opacity: 0, filter: "blur(10px)" },
@@ -66,14 +57,8 @@ export default function HeroCerrosFinal() {
           },
           "-=0.3"
         )
-        .to(cienciasRef.current, {
-          scaleY: 1,
-          scaleX: 1,
-          duration: 0.6,
-          ease: "power2.out",
-        });
+        .to(cienciasRef.current, { scaleY: 1, scaleX: 1, duration: 0.6, ease: "power2.out" });
 
-      // pulso luminoso
       gsap.to([nocheRef.current, cienciasRef.current], {
         textShadow: "0 0 20px rgba(252,215,217,0.9)",
         color: "#fff",
@@ -87,23 +72,33 @@ export default function HeroCerrosFinal() {
     return () => ctx.revert();
   }, []);
 
+  // función para hacer scroll suave al cronograma
+  const scrollToCursos = () => {
+    const target = document.getElementById("cursos");
+    if (target) {
+      window.scrollTo({
+        top: target.offsetTop - 50,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <section
       ref={rootRef}
       className="relative isolate min-h-[100svh] w-full overflow-hidden text-white bg-transparent"
       style={{ "--angle": 0 } as React.CSSProperties}
     >
-      {/* === FONDO === */}
+      {/* === VIDEO DE FONDO === */}
       <div className="absolute inset-0 z-0">
-        <div className="relative h-full w-full">
-          <Image
-            src="/entrada.png"
-            alt="Entrada Colegio Los Cerros"
-            fill
-            priority
-            className="object-cover object-center"
-          />
-        </div>
+        <video
+          src="/entrada.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover object-center"
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-[#7A1C32]/50 via-[#5E1527]/60 to-[#2A0B13]/70 sm:from-[#7A1C32]/40 sm:via-[#5E1527]/50 sm:to-[#2A0B13]/60" />
       </div>
 
@@ -134,7 +129,6 @@ export default function HeroCerrosFinal() {
 
       {/* === CÍRCULO ENERGÉTICO === */}
       <div ref={ringsRef} className="absolute inset-0 z-30 flex flex-col items-center justify-center">
-        {/* === TEXTO SUPERIOR === */}
         <h2
           ref={nocheRef}
           className="text-[#FCD7D9] text-2xl sm:text-4xl font-semibold tracking-[0.35em] mb-6 select-none"
@@ -142,7 +136,6 @@ export default function HeroCerrosFinal() {
           NOCHE DE LAS
         </h2>
 
-        {/* === CÍRCULO === */}
         <div className="relative flex items-center justify-center">
           <div
             data-shard
@@ -156,7 +149,6 @@ export default function HeroCerrosFinal() {
             }}
           />
 
-          {/* === LOGO === */}
           <div
             ref={logoRef}
             className="absolute z-40 w-[28vmin] h-[28vmin] rounded-full overflow-hidden bg-white/10 backdrop-blur-sm border border-white/30 shadow-[0_0_40px_rgba(252,215,217,0.3)]"
@@ -164,7 +156,6 @@ export default function HeroCerrosFinal() {
             <Image src="/logo-cerros.png" alt="Logo Colegio Los Cerros" fill className="object-contain p-3" />
           </div>
 
-          {/* === SEGUNDO ARO === */}
           <div
             data-shard
             className="absolute w-[50vmin] h-[50vmin] rounded-full"
@@ -178,7 +169,6 @@ export default function HeroCerrosFinal() {
           />
         </div>
 
-        {/* === TEXTO INFERIOR === */}
         <h2
           ref={cienciasRef}
           className="text-[#FCD7D9] text-2xl sm:text-4xl font-semibold tracking-[0.35em] mt-6 select-none"
@@ -199,10 +189,14 @@ export default function HeroCerrosFinal() {
         </svg>
       </div>
 
-      {/* === INDICADOR INFERIOR === */}
-      <div className="absolute z-40 bottom-5 left-1/2 -translate-x-1/2 text-xs sm:text-sm tracking-widest text-white/85 p-0.1">
-        DESLIZÁ PARA ENTRAR
-        <div className="mt-1 h-px w-24 bg-gradient-to-r from-transparent via-white/70 to-transparent" />
+      {/* === BOTÓN PRINCIPAL === */}
+      <div className="absolute z-40 bottom-8 left-1/2 -translate-x-1/2">
+        <button
+          onClick={scrollToCursos}
+          className="px-8 py-3 bg-[#FCD7D9] text-[#7A1C32] font-semibold text-sm sm:text-base rounded-full shadow-lg hover:brightness-110 active:scale-95 transition-all duration-200 border border-white/30 backdrop-blur-sm"
+        >
+          Ver Cronograma
+        </button>
       </div>
     </section>
   );

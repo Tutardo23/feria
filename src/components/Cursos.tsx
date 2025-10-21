@@ -1,172 +1,201 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import gsap from "gsap";
+import Image from "next/image";
 
-export default function CronogramaSwipeLineaRebote() {
-  const [x, setX] = useState(0);
-  const [search, setSearch] = useState("");
-  const startX = useRef(0);
-  const startPos = useRef(0);
-  const dragging = useRef(false);
-  const velocity = useRef(0);
-  const frame = useRef<number | null>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
+type Curso = {
+  nivel: "Jardín" | "Primaria" | "Secundaria";
+  hora: string;
+  curso: string;
+  tema: string;
+  lugar: string;
+};
 
+const DATA: Curso[] = [
+  // === JARDÍN ===
+  { nivel: "Jardín", hora: "19:00", curso: "Salita de 5 (Tarde)", tema: "Un reino de sapos y misterios", lugar: "Comedor" },
+  { nivel: "Jardín", hora: "20:00", curso: "Salita de 5 (Tarde)", tema: "Un reino de sapos y misterios", lugar: "Comedor" },
 
-  const cursos = [
-    { nivel: "Inicial", hora: "19:00", curso: "Sala de 5", proyecto: "Los sentidos en acción", lugar: "Aula 1 – Nivel Inicial" },
-    { nivel: "Primaria", hora: "19:15", curso: "1° Grado", proyecto: "La magia del agua", lugar: "Patio principal" },
-    { nivel: "Primaria", hora: "19:30", curso: "2° Grado", proyecto: "El ciclo de las plantas", lugar: "Aula 4 – Planta baja" },
-    { nivel: "Primaria", hora: "19:45", curso: "3° Grado", proyecto: "Volcanes en erupción", lugar: "Laboratorio de Ciencias" },
-    { nivel: "Primaria", hora: "20:00", curso: "4° Grado", proyecto: "Electricidad divertida", lugar: "Aula 9 – Primer piso" },
-    { nivel: "Primaria", hora: "20:15", curso: "5° Grado", proyecto: "Energías renovables", lugar: "Sala de Tecnología" },
-    { nivel: "Primaria", hora: "20:30", curso: "6° Grado", proyecto: "El cuerpo humano", lugar: "Aula 12" },
-    { nivel: "Secundaria", hora: "20:45", curso: "1° Año", proyecto: "Energía y movimiento", lugar: "Lab. de Física" },
-    { nivel: "Secundaria", hora: "21:00", curso: "2° Año", proyecto: "Reacciones químicas", lugar: "Lab. de Química" },
-    { nivel: "Secundaria", hora: "21:15", curso: "3° Año", proyecto: "El ADN y la vida", lugar: "Lab. de Biología" },
-    { nivel: "Secundaria", hora: "21:30", curso: "4° Año", proyecto: "Códigos y lógica", lugar: "Sala de Computación" },
-    { nivel: "Secundaria", hora: "21:45", curso: "5° Año", proyecto: "Tecnología sostenible", lugar: "Aula 14" },
-    { nivel: "Secundaria", hora: "22:00", curso: "6° Año", proyecto: "Investigaciones abiertas", lugar: "Laboratorios – Segundo piso" },
-  ];
+  // === PRIMARIA ===
+  { nivel: "Primaria", hora: "19:00", curso: "1° Grado A", tema: "La dulce vida de grandes trabajadoras", lugar: "Aula de 1° grado" },
+  { nivel: "Primaria", hora: "20:45", curso: "1° Grado B", tema: "La dulce vida de grandes trabajadoras", lugar: "Aula de 1° grado" },
+  { nivel: "Primaria", hora: "19:00", curso: "2° Grado A", tema: "Diversión Reciclada", lugar: "Aulas de 2° grado" },
+  { nivel: "Primaria", hora: "20:45", curso: "2° Grado B", tema: "Diversión Reciclada", lugar: "Aulas de 2° grado" },
+  { nivel: "Primaria", hora: "19:00", curso: "3° Grado A", tema: "Cuidemos el agua, cuidemos la vida", lugar: "Aula de 3° grado" },
+  { nivel: "Primaria", hora: "20:45", curso: "3° Grado B", tema: "Cuidemos el agua, cuidemos la vida", lugar: "Aula de 3° grado" },
+  { nivel: "Primaria", hora: "19:00", curso: "4° Grado A", tema: "Mini Huerta Escolar", lugar: "Aula de 4° grado + huerta en campo de deportes" },
+  { nivel: "Primaria", hora: "20:45", curso: "4° Grado B", tema: "Mini Huerta Escolar", lugar: "Aula de 4° grado + huerta en campo de deportes" },
+  { nivel: "Primaria", hora: "19:00", curso: "5° Grado A y B", tema: "Guardianas del agua: Gotitas que salvan", lugar: "Aula de 5° grado A" },
+  { nivel: "Primaria", hora: "20:45", curso: "5° Grado A y B", tema: "Guardianas del agua: Gotitas que salvan", lugar: "Aula de 5° grado A" },
+  { nivel: "Primaria", hora: "19:00", curso: "6° Grado A", tema: "Click verde", lugar: "Aula de 6° grado" },
+  { nivel: "Primaria", hora: "20:45", curso: "6° Grado B", tema: "Click verde", lugar: "Aula de 6° grado" },
 
-  const normalize = (text: string) =>
-    text
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/\p{Diacritic}/gu, "")
-      .replace(/[°º]/g, "")
-      .replace(/\s+/g, " ")
-      .trim();
+  // === SECUNDARIA ===
+  { nivel: "Secundaria", hora: "A confirmar", curso: "1° Año A y B", tema: "PASCALANDIA", lugar: "Aulas 1° A y 1° B" },
+  { nivel: "Secundaria", hora: "A confirmar", curso: "2° Año A", tema: "Eco alumnas, transformando plástico en conciencia", lugar: "Entrada" },
+  { nivel: "Secundaria", hora: "A confirmar", curso: "2° Año A", tema: "Going green", lugar: "Entrada" },
+  { nivel: "Secundaria", hora: "A confirmar", curso: "3° Año A", tema: "Figuras que hablan: el arte de la forma.", lugar: "Aula 3°A" },
+  { nivel: "Secundaria", hora: "A confirmar", curso: "3° Año B", tema: "La armonía de la naturaleza: el número áureo en la creación", lugar: "Aulas de 2°B y 3°B" },
+  { nivel: "Secundaria", hora: "A confirmar", curso: "4° Año A y B", tema: "Pequeñas decisiones, grandes cambios", lugar: "Aula 4° A" },
+  { nivel: "Secundaria", hora: "A confirmar", curso: "4° Año B", tema: "¡Prepárate para la descarga!: El Poder de la FEM", lugar: "Pasillo frente al aula 4°A" },
+  { nivel: "Secundaria", hora: "A confirmar", curso: "5° Año A", tema: "Experiencia U", lugar: "Aula 5° A" },
+  { nivel: "Secundaria", hora: "A confirmar", curso: "5° Año B", tema: "De la curiosidad a la creación: la ciencia y la poesía en diálogo", lugar: "Aula 5° B" },
+  { nivel: "Secundaria", hora: "Toda la feria", curso: "6° Año A", tema: "ARTE: Perdidas en la historia", lugar: "Patio Primaria" },
+  { nivel: "Secundaria", hora: "A confirmar", curso: "6° Año A", tema: "6° emprende", lugar: "Aula 6° año B" },
+  { nivel: "Secundaria", hora: "A confirmar", curso: "6° Año B", tema: "Fe joven", lugar: "Aula 6° año B" },
+];
 
-  // Ajuste de tamaño para que se vea más del final
-  const cardWidth = 320;
-  const gap = 60;
-  const totalWidth = (cardWidth + gap) * cursos.length;
-  const MAX = 0;
-  const MIN = -(totalWidth - (typeof window !== "undefined" ? window.innerWidth * 1.15 : 360)); // muestra un poco más del final
-  const clamp = (v: number) => Math.max(Math.min(v, MAX), MIN);
+const NIVELES: Array<Curso["nivel"] | "Todos"> = ["Todos", "Jardín", "Primaria", "Secundaria"];
 
-  // --- Swipe manual tipo Instagram ---
-  const onDown = (e: React.PointerEvent) => {
-    dragging.current = true;
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-    startX.current = e.clientX;
-    startPos.current = x;
-    if (frame.current) cancelAnimationFrame(frame.current);
-  };
+const colorByNivel = (nivel: Curso["nivel"]) => {
+  if (nivel === "Jardín") return "bg-[#EAF7E5] text-[#234D20]";
+  if (nivel === "Primaria") return "bg-[#E6EEFF] text-[#1B3C75]";
+  return "bg-[#F5E0E5] text-[#7A1C32]";
+};
 
-  const onMove = (e: React.PointerEvent) => {
-    if (!dragging.current) return;
-    const dx = e.clientX - startX.current;
-    velocity.current = dx * 0.3; // almacena velocidad
-    setX(clamp(startPos.current + dx));
-  };
+export default function SeccionFeriaLosCerrosCinematic() {
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const [query, setQuery] = useState("");
+  const [nivel, setNivel] = useState<"Todos" | Curso["nivel"]>("Todos");
+  const [mapOpen, setMapOpen] = useState(false);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  const onUp = (e: React.PointerEvent) => {
-    dragging.current = false;
-    (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+  const normalize = (t: string) => t.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
 
-    // --- Rebote tipo elástico ---
-    let current = x;
-    const decay = 0.9;
-    const animate = () => {
-      velocity.current *= decay;
-      current += velocity.current;
-      if (current > MAX) {
-        current = (current + MAX) / 2;
-        velocity.current *= -0.4;
-      } else if (current < MIN) {
-        current = (current + MIN) / 2;
-        velocity.current *= -0.4;
-      }
-      setX(current);
-      if (Math.abs(velocity.current) > 0.5) frame.current = requestAnimationFrame(animate);
-    };
-    frame.current = requestAnimationFrame(animate);
-  };
-
-  // --- Buscador funcional ---
-  useEffect(() => {
-    if (!search) return;
-    const q = normalize(search).replace("ano", "año");
-    const index = cursos.findIndex((c) =>
-      normalize(`${c.curso} ${c.proyecto} ${c.lugar} ${c.nivel} ${c.hora}`).includes(q)
+  const results = useMemo(() => {
+    const q = normalize(query);
+    return DATA.filter(
+      (c) =>
+        (nivel === "Todos" || c.nivel === nivel) &&
+        normalize(`${c.curso} ${c.tema} ${c.lugar}`).includes(q)
     );
-    if (index === -1) return;
-    const containerWidth = window.innerWidth;
-    const target = clamp(-index * (cardWidth + gap) + containerWidth / 2 - cardWidth / 2);
-    setX(target);
-  }, [search]);
+  }, [query, nivel]);
+
+  // Animación de entrada
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".card", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.05, ease: "power3.out" });
+    }, rootRef);
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
-      className="w-screen h-screen bg-[#7A1C32] text-[#FFF8F7] font-['Handlee'] flex flex-col items-center overflow-hidden select-none relative"
-      style={{ touchAction: "none" }}
-    >
-      {/* 🔍 Buscador */}
-      <div className="absolute top-8 left-1/2 -translate-x-1/2 z-10 text-center flex flex-col gap-3 px-4">
-        <h2 className="text-3xl md:text-5xl font-bold">Cronograma General</h2>
-        <p className="text-[#FCD7D9]/80 text-base md:text-lg">Deslizá o buscá el curso</p>
-        <input
-          type="text"
-          placeholder="Buscar curso, grado o lugar..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="px-6 py-3 rounded-full text-[#7A1C32] bg-[#FFF8F7] w-[80vw] max-w-md text-lg outline-none focus:ring-4 focus:ring-[#FCD7D9]/80"
-        />
+  id="cursos" // 👈 ESTE ID HACE QUE EL BOTÓN DEL HERO FUNCIONE
+  ref={rootRef}
+  className="relative w-full min-h-screen bg-gradient-to-b from-[#7A1C32] via-[#5E1527] to-[#2A0B13] text-white font-[Outfit] overflow-hidden py-16 px-4"
+>
+
+      {/* Botón mapa fijo */}
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => setMapOpen(true)}
+        className="fixed top-6 right-6 z-20 flex items-center gap-2 bg-[#FFF8F7] text-[#7A1C32] px-5 py-2 rounded-full font-semibold shadow-lg hover:shadow-xl transition"
+      >
+        📍 Ver mapa
+      </motion.button>
+
+      {/* Encabezado */}
+      <div className="text-center mb-14">
+        <h2 className="text-4xl md:text-5xl font-bold mb-2">Encontrá tu curso</h2>
+        <p className="text-[#FCD7D9]/80">Deslizá y ubicá el proyecto de tu hija</p>
       </div>
 
-      {/* 🌐 Swipe con línea de tiempo */}
-      <div
-        ref={trackRef}
-        onPointerDown={onDown}
-        onPointerMove={onMove}
-        onPointerUp={onUp}
-        onPointerCancel={onUp}
-        className="absolute bottom-0 left-0 w-full h-[500px] cursor-grab active:cursor-grabbing"
-      >
-        <div
-          style={{
-            transform: `translateX(${x}px)`,
-            transition: dragging.current ? "none" : "transform 0.2s ease-out",
-          }}
-          className="absolute left-0 top-0 h-full flex items-center gap-[60px] px-[15vw] will-change-transform"
-        >
-          {cursos.map((c, i) => (
-            <div
-              key={i}
-              className="relative flex flex-col items-center justify-center min-w-[320px]"
+      {/* Buscador y niveles */}
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Buscar curso o tema..."
+          className="px-6 py-3 rounded-full text-[#7A1C32] bg-[#FFF8F7] w-[80vw] sm:w-[420px] outline-none focus:ring-4 focus:ring-[#FCD7D9]/60"
+        />
+        <div className="flex gap-2 overflow-x-auto scrollbar-none">
+          {NIVELES.map((n) => (
+            <button
+              key={n}
+              onClick={() => setNivel(n as any)}
+              className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+                nivel === n
+                  ? "bg-[#FFF8F7] text-[#7A1C32] shadow-md"
+                  : "bg-white/10 text-white/80 hover:bg-white/20"
+              }`}
             >
-              {/* Hora */}
-              <div className="text-xl md:text-2xl font-bold text-[#FCD7D9] mb-3">
-                {c.hora} hs
-              </div>
-
-              {/* 🔹 Línea + punto */}
-              <div className="relative flex items-center justify-center mb-10 w-full">
-                {i < cursos.length - 1 && (
-                  <div className="absolute left-1/2 h-[2px] bg-[#FFF8F7]/30 w-[calc(100%+8rem)] translate-x-[8px]" />
-                )}
-                <div className="w-4 h-4 rounded-full bg-[#FFF8F7] shadow-[0_0_8px_rgba(255,255,255,0.5)]" />
-              </div>
-
-              {/* Info (cards del color del fondo) */}
-              <div
-                className={`bg-[#7A1C32] border border-[#FFF8F7]/30 text-[#FFF8F7] rounded-2xl shadow-lg min-w-[320px] h-[260px] flex flex-col justify-center items-center px-6 text-center transition-transform ${
-                  normalize(search) &&
-                  normalize(`${c.curso} ${c.proyecto}`).includes(normalize(search))
-                    ? "scale-105"
-                    : ""
-                }`}
-              >
-                <h3 className="text-2xl md:text-3xl font-extrabold mb-1">{c.curso}</h3>
-                <p className="text-lg italic mb-2 text-[#FCD7D9]">{c.proyecto}</p>
-                <p className="text-sm opacity-80">{c.lugar}</p>
-                <span className="mt-4 text-xs opacity-60">{c.nivel}</span>
-              </div>
-            </div>
+              {n}
+            </button>
           ))}
         </div>
       </div>
+
+      {/* Cards con efecto cinematic */}
+      <div
+        ref={scrollRef}
+        className="flex overflow-x-auto snap-x snap-mandatory gap-10 pb-10 scrollbar-none justify-start px-4"
+      >
+        {results.map((c, i) => (
+          <motion.div
+            key={i}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            className={`card flex-shrink-0 snap-center w-[88vw] sm:w-[460px] min-h-[270px] ${colorByNivel(
+              c.nivel
+            )} rounded-3xl shadow-[0_12px_28px_rgba(0,0,0,0.25)] p-8 transition-transform duration-300`}
+            style={{
+              filter: "blur(0px)",
+            }}
+            whileInView={{
+              scale: [0.95, 1],
+              filter: ["blur(4px)", "blur(0px)"],
+              transition: { duration: 0.6 },
+            }}
+          >
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="text-3xl font-bold">{c.curso}</h3>
+              <div className="text-right">
+                <div className="text-xs uppercase opacity-70">Horario</div>
+                <div className="text-xl font-extrabold text-[#7A1C32]">{c.hora}</div>
+              </div>
+            </div>
+            <p className="italic text-lg text-[#7A1C32] mb-4">{c.tema}</p>
+            <div className="bg-[#FFF8F7]/70 rounded-xl px-5 py-3 border border-[#7A1C32]/10 shadow-inner">
+              <span className="font-semibold text-[#7A1C32]">{c.lugar}</span>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Modal mapa */}
+      {mapOpen && (
+        <div
+          onClick={() => setMapOpen(false)}
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-30 p-4"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4 }}
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-[92vw] max-w-4xl rounded-3xl overflow-hidden border border-white/10 shadow-2xl"
+          >
+            <button
+              onClick={() => setMapOpen(false)}
+              className="absolute top-3 right-3 bg-white/90 text-[#7A1C32] px-3 py-1 rounded-full text-sm z-10"
+            >
+              ✕ Cerrar
+            </button>
+            <Image
+              src="/mapa.jpg"
+              alt="Mapa de ubicaciones"
+              width={1600}
+              height={1000}
+              className="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"
+              priority
+            />
+          </motion.div>
+        </div>
+      )}
     </section>
   );
 }

@@ -12,7 +12,6 @@ export default function SeccionProyectosCinematic() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // 🎨 Fondo que cambia progresivamente (bordó → rosa → blanco cálido)
       gsap.to(sectionRef.current, {
         background: "linear-gradient(to bottom, #7A1C32, #EFB6BE, #FFF8F7)",
         ease: "none",
@@ -24,7 +23,6 @@ export default function SeccionProyectosCinematic() {
         },
       });
 
-      // 🪄 Animaciones GSAP individuales por bloque
       proyectosRef.current.forEach((el, i) => {
         if (!el) return;
         const titulo = el.querySelector(".titulo");
@@ -40,39 +38,21 @@ export default function SeccionProyectosCinematic() {
           },
         });
 
-        // ✴️ Título con efecto "reveal" desde los costados
         tl.fromTo(
           titulo,
           { opacity: 0, x: i % 2 === 0 ? -120 : 120, skewX: i % 2 === 0 ? 8 : -8 },
-          {
-            opacity: 1,
-            x: 0,
-            skewX: 0,
-            duration: 1.2,
-            ease: "power3.out",
-          }
+          { opacity: 1, x: 0, skewX: 0, duration: 1.2, ease: "power3.out" }
         );
-
-        // ✴️ Texto que sube con fade suave
         tl.fromTo(
           texto,
           { opacity: 0, y: 40 },
           { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" },
           "-=0.8"
         );
-
-        // ✴️ Imagen con blur + parallax suave
         tl.fromTo(
           imagen,
           { opacity: 0, scale: 0.9, filter: "blur(10px)", y: 80 },
-          {
-            opacity: 1,
-            scale: 1,
-            filter: "blur(0px)",
-            y: 0,
-            duration: 1.5,
-            ease: "power3.out",
-          },
+          { opacity: 1, scale: 1, filter: "blur(0px)", y: 0, duration: 1.5, ease: "power3.out" },
           "-=0.9"
         );
       });
@@ -83,22 +63,22 @@ export default function SeccionProyectosCinematic() {
 
   const proyectos = [
     {
-      titulo: "Explorando el Universo",
+      titulo: "Explorando desde los primeros pasos",
       texto:
-        "Los alumnos de distintos cursos representaron el sistema solar con modelos móviles, observando la rotación y traslación de los planetas. Un recorrido visual por la inmensidad del espacio.",
-      img: "/planetas.webp",
+        "Las alumnas más pequeñas participaron con entusiasmo en propuestas sencillas que despertaron su curiosidad y ganas de descubrir el mundo que las rodea.",
+      img: "/proyectos/5.jpg",
     },
     {
-      titulo: "Energía en Acción",
+      titulo: "Aprender con experiencias",
       texto:
-        "A través de experimentos con molinos, generadores y circuitos simples, los estudiantes comprendieron cómo la energía se transforma y se aprovecha en la vida diaria.",
-      img: "/energia.webp",
+        "En los cursos de primaria y secundaria se realizaron actividades que integraron observación, experimentación y trabajo en equipo, mostrando distintas formas de aprender haciendo.",
+      img: "/proyectos/1.jpg",
     },
     {
-      titulo: "Vida en Miniatura",
+      titulo: "La feria en movimiento",
       texto:
-        "Con microscopios, lupas y cámaras, los alumnos exploraron las texturas invisibles del mundo natural: hojas, agua, aire y luz. Una mirada cercana a los pequeños universos que nos rodean.",
-      img: "/microscopio.webp",
+        "Una jornada donde toda la comunidad educativa compartió proyectos, ideas y aprendizajes. La ciencia, el arte y la creatividad se unieron en una experiencia común.",
+      img: "/proyectos/3.jpg",
     },
   ];
 
@@ -113,7 +93,7 @@ export default function SeccionProyectosCinematic() {
           Proyectos Destacados
         </h2>
         <p className="mt-4 text-lg text-[#FFF8F7]/80">
-          Una mirada a las experiencias científicas del Colegio Los Cerros
+          Una muestra del trabajo y la creatividad de nuestras alumnas
         </p>
       </div>
 
@@ -154,8 +134,8 @@ export default function SeccionProyectosCinematic() {
               </p>
             </div>
 
-            {/* Imagen */}
-            <div className="relative w-full md:w-1/2 aspect-[4/3] rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.35)] imagen">
+            {/* Imagen (vertical) */}
+            <div className="relative w-full md:w-1/2 aspect-[3/4] rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.35)] imagen">
               <Image
                 src={p.img}
                 alt={p.titulo}
