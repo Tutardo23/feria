@@ -90,17 +90,20 @@ export default function HeroCerrosFinal() {
       style={{ "--angle": 0 } as React.CSSProperties}
     >
       {/* === VIDEO DE FONDO === */}
-      <div className="absolute inset-0 z-0">
-        <video
-          src="/entrada.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#7A1C32]/50 via-[#5E1527]/60 to-[#2A0B13]/70 sm:from-[#7A1C32]/40 sm:via-[#5E1527]/50 sm:to-[#2A0B13]/60" />
-      </div>
+      {/* === VIDEO DE FONDO (versión corregida, más nítida) === */}
+<div className="absolute inset-0 z-0">
+  <video
+    src="/entrada.mp4"
+    autoPlay
+    loop
+    muted
+    playsInline
+    className="w-full h-full object-cover object-center brightness-[1.05] contrast-[1.1]"
+  />
+  {/* Degradado mucho más suave y translúcido */}
+  <div className="absolute inset-0 bg-gradient-to-b from-[#7A1C32]/20 via-[#5E1527]/30 to-[#2A0B13]/40 sm:from-[#7A1C32]/15 sm:via-[#5E1527]/25 sm:to-[#2A0B13]/35" />
+</div>
+
 
       {/* === EFECTOS === */}
       <div

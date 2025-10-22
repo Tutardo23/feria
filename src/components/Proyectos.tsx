@@ -78,7 +78,7 @@ export default function SeccionProyectosCinematic() {
       titulo: "La feria en movimiento",
       texto:
         "Una jornada donde toda la comunidad educativa compartió proyectos, ideas y aprendizajes. La ciencia, el arte y la creatividad se unieron en una experiencia común.",
-      img: "/proyectos/3.jpg",
+      img: "/proyectos/2.jpg",
     },
   ];
 
