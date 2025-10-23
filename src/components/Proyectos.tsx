@@ -9,6 +9,22 @@ gsap.registerPlugin(ScrollTrigger);
 export default function SeccionProyectosCinematic() {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const proyectosRef = useRef<(HTMLDivElement | null)[]>([]);
+useEffect(() => {
+  gsap.fromTo(
+    ".animate-marquee",
+    { opacity: 0, y: 40 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 1.6,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: ".animate-marquee",
+        start: "top 90%",
+      },
+    }
+  );
+}, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -87,6 +103,74 @@ export default function SeccionProyectosCinematic() {
       ref={sectionRef}
       className="relative w-full min-h-screen text-white overflow-hidden py-32 md:py-44 bg-[#7A1C32]"
     >
+   {/* 🌟 Galería Premium tipo marcas */}
+<div
+  ref={sectionRef}
+  className="relative w-full overflow-hidden py-8 md:py-10 
+             bg-gradient-to-r from-[#611224]/70 via-[#7A1C32]/60 to-[#611224]/70 
+             border-y border-white/10 backdrop-blur-sm 
+             mt-[-6rem] mb-16" // 👈 ajustá estos valores
+>
+  <div className="overflow-hidden">
+    <div className="flex items-center gap-10 md:gap-20 animate-marquee hover:[animation-play-state:paused]">
+      {[
+        "/proyectos/1.jpg",
+        "/proyectos/2.jpg",
+        "/proyectos/3.jpg",
+        "/proyectos/4.jpg",
+        "/proyectos/5.jpg",
+        "/proyectos/6.png",
+        "/proyectos/7.png",
+        "/proyectos/8.png",
+      ].map((src, i) => (
+        <div
+          key={i}
+          className="relative w-[90px] h-[90px] md:w-[120px] md:h-[120px] flex-shrink-0 overflow-hidden 
+                     rounded-2xl grayscale hover:grayscale-0 hover:brightness-110 hover:scale-[1.05] 
+                     transition-all duration-700 ease-[cubic-bezier(.19,1,.22,1)] 
+                     shadow-[0_0_20px_rgba(0,0,0,0.2)]"
+        >
+          <Image
+            src={src}
+            alt={`galeria-${i}`}
+            fill
+            className="object-cover object-center transition-all duration-700"
+          />
+        </div>
+      ))}
+      {/* Duplicado para loop infinito */}
+      {[
+        "/proyectos/1.jpg",
+        "/proyectos/2.jpg",
+        "/proyectos/3.jpg",
+        "/proyectos/4.jpg",
+        "/proyectos/5.jpg",
+        "/proyectos/6.png",
+        "/proyectos/7.png",
+        "/proyectos/8.png",
+      ].map((src, i) => (
+        <div
+          key={`dup-${i}`}
+          className="relative w-[90px] h-[90px] md:w-[120px] md:h-[120px] flex-shrink-0 overflow-hidden 
+                     rounded-2xl grayscale hover:grayscale-0 hover:brightness-110 hover:scale-[1.05] 
+                     transition-all duration-700 ease-[cubic-bezier(.19,1,.22,1)] 
+                     shadow-[0_0_20px_rgba(0,0,0,0.2)]"
+        >
+          <Image
+            src={src}
+            alt={`galeria-dup-${i}`}
+            fill
+            className="object-cover object-center transition-all duration-700"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+
+
+
       {/* 🔹 Título principal */}
       <div className="text-center mb-24">
         <h2 className="text-5xl md:text-7xl font-['Handlee'] font-bold text-[#FFF] drop-shadow-[0_3px_8px_rgba(0,0,0,0.4)]">
