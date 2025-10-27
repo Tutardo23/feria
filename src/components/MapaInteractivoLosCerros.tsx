@@ -1,87 +1,83 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import gsap from "gsap";
 import Image from "next/image";
 
 interface MapaInteractivoLosCerrosProps {
-  cursoInicial?: string | null;
+  cursoInicial?: string;
 }
 
 export default function MapaInteractivoLosCerros({
-  cursoInicial = null,
+  cursoInicial = "4° Grado A",
 }: MapaInteractivoLosCerrosProps) {
-  const arrowRef = useRef<HTMLDivElement | null>(null);
+  const arrowRefs = useRef<HTMLDivElement[]>([]);
 
-  // 📍 Coordenadas finales (actualizadas por vos)
+  // 📍 Coordenadas finales (fijas)
   const ubicaciones: Record<string, { top: number; left: number }[]> = {
-    "Salita de 5 (Tarde)": [{"top":26.190476190476193,"left":83.40773582458496}],
-    "1° Grado A": [{ top: 52.23, left: 66.10 }],
-    "1° Grado B": [{ top: 52.23, left: 66.10 }],
-    "2° Grado A": [{ top: 36.2, left: 27.5 }],
-    "2° Grado B": [{ top: 36.2, left: 27.5 }],
-    "3° Grado A": [{ top: 33.7, left: 10.7 }],
-    "3° Grado B": [{ top: 33.7, left: 10.7 }],
+    "Salita de 5 A (Tarde)": [{ top: 40.33, left: 90.74 }],
+    "Salita de 5 B (Tarde)": [{ top: 40.33, left: 90.74 }],
+    "1° Grado A": [{ top: 68.75, left: 71.32 }],
+    "1° Grado B": [{ top: 68.75, left: 71.32 }],
+    "2° Grado A": [{ top: 49.55, left: 32.25 }],
+    "2° Grado B": [{ top: 49.55, left: 32.25 }],
+    "3° Grado A": [{ top: 48.66, left: 15.51 }],
+    "3° Grado B": [{ top: 48.66, left: 15.51 }],
     "4° Grado A": [
-      { top: 47.8, left: 85 },
-      { top: 15.08, left: 60.75 },
+      { top: 66.82, left: 90.51 },
+      { top: 26.34, left: 64.84 },
     ],
     "4° Grado B": [
-      { top: 47.8, left: 85 },
-      { top: 15.08, left: 60.75 },
+      { top: 66.82, left: 90.51 },
+      { top: 26.34, left: 64.84 },
     ],
-    "5° Grado A y B": [{ top: 36.01, left: 38.88 }],
-    "6° Grado A": [{ top: 24.70, left: 27.38 }],
-    "6° Grado B": [{ top: 24.70, left: 27.38 }],
-    "1° Año A": [{ top: 67.01, left: 48.58 }],
-    "1° Año B": [{ top: 70.13, left: 41.44 }],
-    "2° Año A": [{ top: 87.05, left: 76.71 }],
-    "2° Año B": [{ top: 87.05, left: 76.71 }],
-    "3° Año A": [{ top: 68.15, left: 16.88 }],
-    "3° Año B": [
-      
-      { top: 69.39, left: 7.18 },
-    ],
+    "5° Grado A": [{ top: 51.93, left: 45.87 }],
+    "5° Grado B": [{ top: 51.93, left: 45.87 }],
+    "6° Grado A": [{ top: 35.86, left: 32.48 }],
+    "6° Grado B": [{ top: 35.86, left: 32.48 }],
+    "1° Año A": [{ top: 77.53, left: 54.58 }],
+    "1° Año B": [{ top: 79.61, left: 46.54 }],
+    "2° Año A": [{ top: 96.28, left: 82.25 }],
+    "2° Año B": [{ top: 96.28, left: 82.25 }],
+    "3° Año A": [{ top: 80.8, left: 22.88 }],
+    "3° Año B": [{ top: 81.4, left: 22.66 }],
     "4° Año A y B": [{ top: 81.25, left: 40.55 }],
-    "4° Año A": [{ top: 81.25, left: 40.55 }],
-    "4° Año B": [{ top: 81.25, left: 40.55 }],
-    "5° Año A": [{ top: 82.44, left: 33.96 }],
-    "5° Año B": [{ top: 78.57, left: 25.59 }],
-    "6° Año A": [{ top: 48.3, left: 33.8 }],
-    "6° Año B": [{ top: 48.3, left: 33.8 }],
+    "4° Año A": [{ top: 89.73, left: 47.21 }],
+    "4° Año B": [{ top: 89.73, left: 47.21 }],
+    "5° Año A": [{ top: 94.79, left: 38.06 }],
+    "5° Año B": [{ top: 91.52, left: 29.13 }],
+    "6° Año A": [{ top: 63.84, left: 39.62 }],
+    "6° Año B": [{ top: 63.84, left: 39.62 }],
   };
 
-  const coords =
-    cursoInicial && ubicaciones[cursoInicial]
-      ? ubicaciones[cursoInicial]
-      : [{ top: 50, left: 50 }];
+  const coords = ubicaciones[cursoInicial] || [];
 
-  // ✨ Animación rebote GSAP
+  // ✨ Animación de rebote
   useEffect(() => {
-    if (arrowRef.current) {
-      gsap.fromTo(
-        arrowRef.current,
-        { y: -10, scale: 0.95 },
-        {
-          y: 10,
-          scale: 1.1,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-          duration: 1.4,
-        }
-      );
-    }
-  }, [cursoInicial]);
+    arrowRefs.current.forEach((arrow) => {
+      if (arrow)
+        gsap.fromTo(
+          arrow,
+          { y: -6, scale: 0.95 },
+          {
+            y: 6,
+            scale: 1.05,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            duration: 1.3,
+          }
+        );
+    });
+  }, [coords]);
 
   return (
-    <section className="bg-[#7A1C32] text-white font-[Outfit] flex flex-col items-center justify-center py-10 px-4">
-      <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center">
-        {cursoInicial || "Mapa Interactivo"}
+    <section className="bg-[#7A1C32] text-white font-[Outfit] flex flex-col items-center py-8 px-3">
+      <h2 className="text-2xl md:text-3xl font-bold mb-5 text-center leading-tight">
+        {cursoInicial}
       </h2>
 
-      {/* Contenedor del mapa */}
-      <div className="relative w-[95vw] max-w-4xl aspect-[4/3] bg-white rounded-3xl overflow-hidden shadow-2xl border border-white/20">
+      <div className="relative w-full max-w-md aspect-[4/3] bg-white rounded-3xl overflow-hidden shadow-lg border border-white/20">
         <Image
           src="/mapa.jpg"
           alt="Mapa Colegio Los Cerros"
@@ -90,44 +86,35 @@ export default function MapaInteractivoLosCerros({
           priority
         />
 
-        {/* Flechas animadas */}
-        <AnimatePresence>
-          {cursoInicial &&
-            coords.map((pos, i) => (
+        {/* 📍 Flechas fijas */}
+        {coords.map((pos, i) => (
+          <motion.div
+            key={i}
+            ref={(el) => {
+              if (el) arrowRefs.current[i] = el;
+            }}
+            className="absolute z-20 flex flex-col items-center justify-center"
+            style={{
+              top: `${pos.top}%`,
+              left: `${pos.left}%`,
+              transform: "translate(-50%, -50%)",
+            }}
+          >
+            <div style={{ transform: "rotate(180deg)" }}>
               <motion.div
-                ref={i === 0 ? arrowRef : null}
-                key={`${cursoInicial}-${i}`}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="absolute z-20 flex flex-col items-center justify-center"
-                style={{
-                  top: `${pos.top}%`,
-                  left: `calc(${pos.left}% + 4%)`, // ✅ Corrección horizontal automática
-                  transform: "translate(-50%, -50%)",
+                className="text-5xl md:text-7xl text-[#FCD7D9] drop-shadow-[0_0_20px_rgba(252,215,217,0.9)] select-none"
+                animate={{ y: [0, 15, 0], scale: [1, 1.1, 1] }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 1.5,
+                  ease: "easeInOut",
                 }}
               >
-                {/* Flecha girada 180° reales */}
-                <div style={{ transform: "rotate(180deg)" }}>
-                  <motion.div
-                    className="text-8xl text-[#FCD7D9] drop-shadow-[0_0_25px_rgba(252,215,217,0.9)]"
-                    animate={{
-                      y: [0, 20, 0],
-                      scale: [1, 1.1, 1],
-                    }}
-                    transition={{
-                      repeat: Infinity,
-                      duration: 1.6,
-                      ease: "easeInOut",
-                    }}
-                  >
-                    ↓
-                  </motion.div>
-                </div>
+                ↓
               </motion.div>
-            ))}
-        </AnimatePresence>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </section>
   );
