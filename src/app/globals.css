@@ -1,6 +1,9 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+* {
+  font-family: "Dosis", sans-serif;
+}
 
 html, body {
   scroll-behavior: smooth;
@@ -18,4 +21,7 @@ html, body {
   display: flex;
   width: max-content;
   animation: marquee 40s linear infinite;
+}
+body {
+  font-family: "Dosis", sans-serif;
 }

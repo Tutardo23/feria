@@ -173,9 +173,10 @@ useEffect(() => {
 
       {/* 🔹 Título principal */}
       <div className="text-center mb-24">
-        <h2 className="text-5xl md:text-7xl font-['Handlee'] font-bold text-[#FFF] drop-shadow-[0_3px_8px_rgba(0,0,0,0.4)]">
-          Proyectos Destacados
-        </h2>
+        <h2 className="text-5xl md:text-7xl font-bold text-[#FFF] drop-shadow-[0_3px_8px_rgba(0,0,0,0.4)]">
+  Proyectos Destacados
+</h2>
+
         <p className="mt-4 text-lg text-[#FFF8F7]/80">
           Una muestra del trabajo y la creatividad de nuestras alumnas
         </p>

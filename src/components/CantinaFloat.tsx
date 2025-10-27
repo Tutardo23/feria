@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function CantinaFloat() {
   const [popup, setPopup] = useState(false);
-  const [visible, setVisible] = useState(true); // desaparece hasta recargar
+  const [visible, setVisible] = useState(true);
 
   if (!visible) return null;
 
@@ -32,7 +32,7 @@ export default function CantinaFloat() {
           ease: "easeInOut",
         }}
       >
-        ⚠️ <span className="ml-1 font-semibold">AVISO</span>
+        🍽️ <span className="ml-1 font-semibold">Cantina</span>
       </motion.button>
 
       {/* === POPUP === */}
@@ -52,12 +52,12 @@ export default function CantinaFloat() {
               className="relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl px-10 py-8 text-center max-w-md mx-auto text-white"
             >
               <h3 className="text-2xl font-semibold mb-3 text-[#FCD7D9]">
-                Cantina abierta toda la noche
+                Cantina abierta toda la noche 🍩
               </h3>
               <p className="text-white/80 text-sm leading-relaxed mb-6">
                 Durante todo el evento podrás disfrutar de la cantina con opciones dulces,
                 saladas y bebidas.  
-                <br />¡Aprovechá y disfrutá la noche!
+                <br />¡Aprovechá y disfrutá la noche en familia!
               </p>
 
               <div className="flex justify-center gap-4">
