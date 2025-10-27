@@ -36,7 +36,8 @@ export default function MapaModal({ open, onClose, curso }: MapaModalProps) {
             </button>
 
             {/* Mapa con el curso seleccionado */}
-            <MapaInteractivoLosCerros cursoInicial={curso || null} />
+            <MapaInteractivoLosCerros cursoInicial={curso ?? undefined} />
+
           </motion.div>
         </motion.div>
       )}
