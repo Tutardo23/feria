@@ -53,7 +53,7 @@ const DATA: Curso[] = [
   
 
   { nivel: "Secundaria", hora: "19:15 a 20:00 y 20:15 a 21:00 ", curso: "5° Año A", tema: "Experiencia U", lugar: "Aula 5° A" },
-  { nivel: "Secundaria", hora: "19:00 hs o 20:45 hs", curso: "5° Año B", tema: "El eco de un voto inconsciente", lugar: "Aula 5° B" },
+  { nivel: "Secundaria", hora: "19:15 a 20:00 y 20:15 a 21:00 ", curso: "5° Año B", tema: "El eco de un voto inconsciente", lugar: "Aula 5° B" },
   
 
   { nivel: "Secundaria", hora: "19:00 hs a 20:45 hs", curso: "6° Año A", tema: "Perdidas en la historia", lugar: "Patio Primaria" },
