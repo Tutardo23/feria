@@ -41,8 +41,8 @@ const DATA: Curso[] = [
   { nivel: "Secundaria", hora: "19:00 hs", curso: "1° Año A", tema: "Pascalandia", lugar: "Aula 1° A" },
   { nivel: "Secundaria", hora: "20:45 hs", curso: "1° Año B", tema: "Pascalandia", lugar: "Aula 1° B" },
 
-  { nivel: "Secundaria", hora: "19:00 hs", curso: "2° Año A", tema: "Eco alumnas, transformando plástico en conciencia", lugar: "Playón de entrada" },
-  { nivel: "Secundaria", hora: "20:45 hs", curso: "2° Año B", tema: "Eco alumnas, transformando plástico en conciencia", lugar: "Playón de entrada" },
+  { nivel: "Secundaria", hora: "19:00 hs", curso: "2° Año A y B", tema: "Eco alumnas, transformando plástico en conciencia", lugar: "Playón de entrada" },
+  
 
   { nivel: "Secundaria", hora: "19:00 hs", curso: "3° Año A", tema: "Figuras que hablan: el arte de la forma", lugar: "Aula 3°A" },
   { nivel: "Secundaria", hora: "20:45 hs", curso: "3° Año B", tema: "La armonía de la naturaleza: el número áureo en la creación", lugar: "Aula 2°A" },
@@ -52,12 +52,12 @@ const DATA: Curso[] = [
   { nivel: "Secundaria", hora: "19:00 hs o 20:45 hs ", curso: "4° Año B", tema: "¡Prepárate para la descarga!: El Poder de la FEM", lugar: "Pasillo frente al aula 4°A" },
   
 
-  { nivel: "Secundaria", hora: "19:00 hs y 20:45 hs", curso: "5° Año A", tema: "Experiencia U", lugar: "Aula 5° A" },
+  { nivel: "Secundaria", hora: "19:15 a 20:00 y 20:15 a 21:00 ", curso: "5° Año A", tema: "Experiencia U", lugar: "Aula 5° A" },
   { nivel: "Secundaria", hora: "19:00 hs o 20:45 hs", curso: "5° Año B", tema: "El eco de un voto inconsciente", lugar: "Aula 5° B" },
   
 
-  { nivel: "Secundaria", hora: "19:00 hs o 20:45 hs", curso: "6° Año A", tema: "Perdidas en la historia", lugar: "Patio Primaria" },
-  { nivel: "Secundaria", hora: "19:00 hs a 20:45 hs", curso: "6° Año B", tema: "6° Emprende", lugar: "Patio Primaria" },
+  { nivel: "Secundaria", hora: "19:00 hs a 20:45 hs", curso: "6° Año A", tema: "Perdidas en la historia", lugar: "Patio Primaria" },
+  { nivel: "Secundaria", hora: "19:00 hs a 20:45 hs", curso: "6° Año B.", tema: "6° Emprende", lugar: "Patio Primaria" },
   { nivel: "Secundaria", hora: "19:00 hs a 20:45 hs", curso: "6° Año B", tema: "Fe joven", lugar: "Patio Primaria" },
   
 ];
@@ -179,13 +179,31 @@ export default function SeccionFeriaLosCerrosCinematic() {
               c.nivel
             )} rounded-3xl shadow-[0_12px_28px_rgba(0,0,0,0.25)] p-8 transition-transform duration-300`}
           >
-            <div className="flex items-center justify-between mb-5">
-              <h3 className="text-2xl font-bold">{c.curso}</h3>
-              <div className="text-right">
-                <div className="text-xs uppercase opacity-70">Horario</div>
-                <div className="text-lg font-extrabold text-[#7A1C32]">{c.hora}</div>
-              </div>
-            </div>
+            <div className="flex items-start justify-between mb-5">
+  <h3 className="text-2xl font-bold">{c.curso}</h3>
+
+  <div className="text-right">
+    <div className="text-[11px] uppercase opacity-70 tracking-wide mb-1">
+      Horario
+    </div>
+    {/* 🕒 Divide automáticamente si hay una "y" en el texto */}
+    {c.hora.includes("y") ? (
+      c.hora.split("y").map((h, idx) => (
+        <div
+          key={idx}
+          className="text-[17px] md:text-[18px] font-bold leading-tight text-[#7A1C32]"
+        >
+          {h.trim()}
+        </div>
+      ))
+    ) : (
+      <div className="text-[17px] md:text-[18px] font-bold leading-tight text-[#7A1C32]">
+        {c.hora}
+      </div>
+    )}
+  </div>
+</div>
+
             <p className="italic text-base text-[#7A1C32] mb-4">{c.tema}</p>
             <div className="bg-[#FFF8F7]/70 rounded-xl px-5 py-3 border border-[#7A1C32]/10 shadow-inner mb-4">
               <span className="font-semibold text-[#7A1C32]">{c.lugar}</span>
