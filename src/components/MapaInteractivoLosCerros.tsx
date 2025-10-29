@@ -40,7 +40,12 @@ export default function MapaInteractivoLosCerros({
     "2° Año A y B": [{ top: 96.28, left: 82.25 }],
     "2° Año B": [{ top: 96.28, left: 82.25 }],
     "3° Año A": [{ top: 80.8, left: 22.88 }],
-    "3° Año B": [{ top: 81.4, left: 22.66 }],
+    "3° Año B": [
+  {
+    "top": 80.21,
+    "left": 13.06
+  }
+],
     "4° Año A y B": [{ top: 81.25, left: 40.55 }],
     "4° Año A": [{ top: 89.73, left: 47.21 }],
     "4° Año B": [{ top: 89.73, left: 47.21 }],
@@ -55,6 +60,8 @@ export default function MapaInteractivoLosCerros({
 ],
 "6° Año B": [{ top: 63.84, left: 39.62 }],
   };
+
+
 
   const coords = ubicaciones[cursoInicial] || [];
 

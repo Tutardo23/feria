@@ -44,11 +44,11 @@ const DATA: Curso[] = [
   
 
   { nivel: "Secundaria", hora: "19:00 hs", curso: "3° Año A", tema: "Figuras que hablan: el arte de la forma", lugar: "Aula 3°A" },
-  { nivel: "Secundaria", hora: "20:45 hs", curso: "3° Año B", tema: "La armonía de la naturaleza: el número áureo en la creación", lugar: "Aula 2°A" },
+  { nivel: "Secundaria", hora: "19:00 y 20:45 ", curso: "3° Año B", tema: "La armonía de la naturaleza: el número áureo en la creación", lugar: "Aula 3°B" },
 
   { nivel: "Secundaria", hora: "19:00 hs", curso: "4° Año A", tema: "Pequeñas decisiones, grandes cambios", lugar: "Aula 4° A" },
   { nivel: "Secundaria", hora: "20:45 hs", curso: "4° Año B", tema: "Pequeñas decisiones, grandes cambios", lugar: "Aula 4° A" },
-  { nivel: "Secundaria", hora: "19:00 hs o 20:45 hs ", curso: "4° Año B", tema: "¡Prepárate para la descarga!: El Poder de la FEM", lugar: "Pasillo frente al aula 4°A" },
+  { nivel: "Secundaria", hora: "20:45 hs ", curso: "4° Año B", tema: "¡Prepárate para la descarga!: El Poder de la FEM", lugar: "Pasillo frente al aula 4°A" },
   
 
   { nivel: "Secundaria", hora: "19:15 a 20:00 y 20:15 a 21:00 ", curso: "5° Año A", tema: "Experiencia U", lugar: "Aula 5° A" },
