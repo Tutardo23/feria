@@ -15,7 +15,7 @@ export default function MapaInteractivoLosCerros({
 
   // 📍 Coordenadas finales (fijas)
   const ubicaciones: Record<string, { top: number; left: number }[]> = {
-    "Salita de 5 A (Tarde)": [{ top: 40.33, left: 90.74 }],
+    "Salita de 5": [{ top: 40.33, left: 90.74 }],
     "Salita de 5 B (Tarde)": [{ top: 40.33, left: 90.74 }],
     "1° Grado A": [{ top: 68.75, left: 71.32 }],
     "1° Grado B": [{ top: 68.75, left: 71.32 }],
