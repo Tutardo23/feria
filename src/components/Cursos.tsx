@@ -15,7 +15,7 @@ type Curso = {
 
 const DATA: Curso[] = [
   // === JARDÍN ===
-  { nivel: "Jardín", hora: "19:00 y 20:45", curso: "Salita de 5", tema: "Un reino de sapos y misterios", lugar: "Comedor" },
+  { nivel: "Jardín", hora: "19:00", curso: "Salita de 5", tema: "Un reino de sapos y misterios", lugar: "Comedor" },
  
   // === PRIMARIA ===
   { nivel: "Primaria", hora: "19:00 hs", curso: "1° Grado A", tema: "La dulce vida de grandes trabajadoras", lugar: "Aula de 1° grado" },
@@ -30,9 +30,8 @@ const DATA: Curso[] = [
   { nivel: "Primaria", hora: "19:00 hs", curso: "4° Grado A", tema: "Mini Huerta Escolar", lugar: "Aula de 4° grado + huerta en campo de deportes" },
   { nivel: "Primaria", hora: "20:45 hs", curso: "4° Grado B", tema: "Mini Huerta Escolar", lugar: "Aula de 4° grado + huerta en campo de deportes" },
 
-  { nivel: "Primaria", hora: "19:00 hs", curso: "5° Grado A", tema: "Guardianas del agua: Gotitas que salvan", lugar: "Aula de 5° grado A" },
-  { nivel: "Primaria", hora: "20:45 hs", curso: "5° Grado B", tema: "Guardianas del agua: Gotitas que salvan", lugar: "Aula de 5° grado A" },
-
+  { nivel: "Primaria", hora: "19:00 y 20:45", curso: "5° Grado (A y B)", tema: "Guardianas del agua: Gotitas que salvan", lugar: "Aula de 5° grado A" },
+  
   { nivel: "Primaria", hora: "19:00 hs", curso: "6° Grado A", tema: "Click verde", lugar: "Aula de 6° grado" },
   { nivel: "Primaria", hora: "20:45 hs", curso: "6° Grado B", tema: "Click verde", lugar: "Aula de 6° grado" },
 

@@ -31,7 +31,7 @@ export default function MapaInteractivoLosCerros({
       { top: 66.82, left: 90.51 },
       { top: 26.34, left: 64.84 },
     ],
-    "5° Grado A": [{ top: 51.93, left: 45.87 }],
+    "5° Grado (A y B)": [{ top: 51.93, left: 45.87 }],
     "5° Grado B": [{ top: 51.93, left: 45.87 }],
     "6° Grado A": [{ top: 35.86, left: 32.48 }],
     "6° Grado B": [{ top: 35.86, left: 32.48 }],
