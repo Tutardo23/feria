@@ -15,7 +15,7 @@ type Curso = {
 
 const DATA: Curso[] = [
   // === JARDÍN ===
-  { nivel: "Jardín", hora: "19:00 hs", curso: "Salita de 5", tema: "Un reino de sapos y misterios", lugar: "Comedor" },
+  { nivel: "Jardín", hora: "19:00 y 20:45", curso: "Salita de 5", tema: "Un reino de sapos y misterios", lugar: "Comedor" },
  
   // === PRIMARIA ===
   { nivel: "Primaria", hora: "19:00 hs", curso: "1° Grado A", tema: "La dulce vida de grandes trabajadoras", lugar: "Aula de 1° grado" },
